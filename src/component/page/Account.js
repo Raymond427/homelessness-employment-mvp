@@ -13,7 +13,7 @@ const Account = ({ user }) => (
             <li id="account-link-log-out" onClick={() => auth.signOut()}>
                 Log Out
             </li>
-            <li>
+            {/* <li>
                 <Link to={PATHS.ORDERS}>Orders</Link>
             </li>
             <li>
@@ -23,7 +23,7 @@ const Account = ({ user }) => (
                 <a href={PATHS.EMAIL_US} target="_blank" rel="noopener noreferrer">
                     Contact Us
                 </a>
-            </li>
+            </li> */}
         </ul>
         {!user && <Redirect to={PATHS.HOME} />}
     </Page>

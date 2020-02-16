@@ -1,0 +1,143 @@
+[debug] [2020-02-16T15:51:59.613Z] ----------------------------------------------------------------------
+[debug] [2020-02-16T15:51:59.615Z] Command:       /usr/local/bin/node /mnt/c/Users/rferr/Documents/Projects/homelessness-employment-mvp/node_modules/.bin/firebase deploy
+[debug] [2020-02-16T15:51:59.616Z] CLI Version:   7.13.0
+[debug] [2020-02-16T15:51:59.616Z] Platform:      linux
+[debug] [2020-02-16T15:51:59.616Z] Node Version:  v11.12.0
+[debug] [2020-02-16T15:51:59.902Z] Time:          Sun Feb 16 2020 10:51:59 GMT-0500 (GMT-05:00)
+[debug] [2020-02-16T15:51:59.902Z] ----------------------------------------------------------------------
+[debug] [2020-02-16T15:51:59.902Z] 
+[debug] [2020-02-16T15:51:59.931Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-02-16T15:51:59.932Z] > authorizing via signed-in user
+[debug] [2020-02-16T15:51:59.932Z] [iam] checking project homelessness-employment for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2020-02-16T15:51:59.935Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2020-02-16T15:51:59.935Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2020-02-16T15:52:00.169Z] <<< HTTP RESPONSE 200
+[debug] [2020-02-16T15:52:00.182Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/homelessness-employment:testIamPermissions  
+
+[debug] [2020-02-16T15:52:00.413Z] <<< HTTP RESPONSE 200
+[debug] [2020-02-16T15:52:00.415Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/homelessness-employment  
+ 
+[debug] [2020-02-16T15:52:01.016Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'homelessness-employment'...
+[info] 
+[info] i  deploying database, storage, firestore, functions, hosting
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] ✔  functions: Finished running predeploy script.
+[info] i  database: checking rules syntax...
+[debug] [2020-02-16T15:52:11.118Z] >>> HTTP REQUEST PUT https://homelessness-employment.firebaseio.com/.settings/rules.json?dryRun=true  
+ {
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    ".read": false,
+    ".write": false
+  }
+}
+[debug] [2020-02-16T15:52:11.486Z] <<< HTTP RESPONSE 200
+[info] ✔  database: rules syntax for database homelessness-employment is valid
+[debug] [2020-02-16T15:52:11.489Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/homelessness-employment  
+ 
+[debug] [2020-02-16T15:52:11.965Z] <<< HTTP RESPONSE 200
+[info] i  firebase.storage: checking storage.rules for compilation errors...
+[debug] [2020-02-16T15:52:11.968Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/homelessness-employment:test  
+
+[debug] [2020-02-16T15:52:12.189Z] <<< HTTP RESPONSE 200
+[info] ✔  firebase.storage: rules file storage.rules compiled successfully
+[info] i  firestore: reading indexes from firestore.indexes.json...
+[info] i  cloud.firestore: checking firestore.rules for compilation errors...
+[debug] [2020-02-16T15:52:12.203Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/homelessness-employment:test  
+
+[debug] [2020-02-16T15:52:12.434Z] <<< HTTP RESPONSE 200
+[info] ✔  cloud.firestore: rules file firestore.rules compiled successfully
+[debug] [2020-02-16T15:52:12.436Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase serve --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "8"
+  },
+  "dependencies": {
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "firebase-functions-test": "^0.1.6"
+  },
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2020-02-16T15:52:12.438Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/homelessness-employment/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2020-02-16T15:52:12.438Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/homelessness-employment/services/runtimeconfig.googleapis.com  
+ 
+[debug] [2020-02-16T15:52:12.780Z] <<< HTTP RESPONSE 200
+[debug] [2020-02-16T15:52:12.808Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2020-02-16T15:52:12.809Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/homelessness-employment/adminSdkConfig  
+ 
+[debug] [2020-02-16T15:52:13.036Z] <<< HTTP RESPONSE 200
+[debug] [2020-02-16T15:52:13.038Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/homelessness-employment/versions  
+
+[debug] [2020-02-16T15:52:23.264Z] <<< HTTP RESPONSE 503
+[debug] [2020-02-16T15:52:23.264Z] <<< HTTP RESPONSE BODY
+[error] 
+[error] Error: HTTP Error: 503, The service is currently unavailable.
+[debug] [2020-02-16T15:52:23.423Z] Error Context: {
+  "body": {
+    "error": {
+      "code": 503,
+      "message": "The service is currently unavailable.",
+      "status": "UNAVAILABLE"
+    }
+  },
+  "response": {
+    "statusCode": 503,
+    "body": {
+      "error": {
+        "code": 503,
+        "message": "The service is currently unavailable.",
+        "status": "UNAVAILABLE"
+      }
+    },
+    "headers": {
+      "vary": "X-Origin, Referer, Origin,Accept-Encoding",
+      "content-type": "application/json; charset=UTF-8",
+      "date": "Sun, 16 Feb 2020 15:52:25 GMT",
+      "server": "ESF",
+      "cache-control": "private",
+      "x-xss-protection": "0",
+      "x-frame-options": "SAMEORIGIN",
+      "x-content-type-options": "nosniff",
+      "alt-svc": "quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000",
+      "accept-ranges": "none",
+      "transfer-encoding": "chunked"
+    },
+    "request": {
+      "uri": {
+        "protocol": "https:",
+        "slashes": true,
+        "auth": null,
+        "host": "firebasehosting.googleapis.com",
+        "port": 443,
+        "hostname": "firebasehosting.googleapis.com",
+        "hash": null,
+        "search": null,
+        "query": null,
+        "pathname": "/v1beta1/sites/homelessness-employment/versions",
+        "path": "/v1beta1/sites/homelessness-employment/versions",
+        "href": "https://firebasehosting.googleapis.com/v1beta1/sites/homelessness-employment/versions"
+      },
+      "method": "POST"
+    }
+  }
+}

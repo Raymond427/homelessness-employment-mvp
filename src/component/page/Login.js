@@ -27,19 +27,19 @@ const SignInAndSignUp = ({ newUser, showDialog, addToHomeScreen }) => {
             method: type
         })
         setAuthErrorMessage('')
-        const notInstalled = !isInStandaloneMode()
-        const showIOSInstallPrompt = isIOS() && notInstalled
-        const showAndroidInstallPrompt = window.BeforeInstallPromptEvent && notInstalled && addToHomeScreen
+        // const notInstalled = !isInStandaloneMode()
+        // const showIOSInstallPrompt = isIOS() && notInstalled
+        // const showAndroidInstallPrompt = window.BeforeInstallPromptEvent && notInstalled && addToHomeScreen
 
-        if (!localStorage.getItem('installation_requested')) {
-            if (showIOSInstallPrompt) {
-                showDialog(DIALOG.IOS_INSTALL)
-            } else if (showAndroidInstallPrompt) {
-                showDialog(DIALOG.ANDROID_INSTALL)
-            }
-        } else if (Notification.permission === NOTIFICATION_PERMISSION_STATUS.DEFAULT) {
-            showDialog(DIALOG.NOTIFICATION_PERMISSION)
-        }
+        // if (!localStorage.getItem('installation_requested')) {
+        //     if (showIOSInstallPrompt) {
+        //         showDialog(DIALOG.IOS_INSTALL)
+        //     } else if (showAndroidInstallPrompt) {
+        //         showDialog(DIALOG.ANDROID_INSTALL)
+        //     }
+        // } else if (Notification.permission === NOTIFICATION_PERMISSION_STATUS.DEFAULT) {
+        //     showDialog(DIALOG.NOTIFICATION_PERMISSION)
+        // }
     }
 
     const handleAuthError = error => {
@@ -55,7 +55,7 @@ const SignInAndSignUp = ({ newUser, showDialog, addToHomeScreen }) => {
         authTrace.putAttribute('type', type)
         setIsLoading(true)
         authProvider()
-            .then(() => handleUser(type))
+            .then(user => handleUser(type))
             .catch(handleAuthError)
             .finally(() => authTrace.stop())
     }
@@ -71,7 +71,7 @@ const SignInAndSignUp = ({ newUser, showDialog, addToHomeScreen }) => {
         <Page pageClassName="Login">
             <h2>{newUser? 'Sign Up' : 'Sign In'}</h2>
             <SocialAuthButton name="google" onClick={() => handleAuth(signInWithGoogle, 'google')} newUser={newUser} />
-            <SocialAuthButton name="facebook" onClick={() => handleAuth(signInWithFacebook, 'facebook')} newUser={newUser} />
+            {/* <SocialAuthButton name="facebook" onClick={() => handleAuth(signInWithFacebook, 'facebook')} newUser={newUser} /> */}
             <Form
                 onSubmit={genericAuth}
                 submitValue={newUser ? 'Sign Up' : 'Sign In'}

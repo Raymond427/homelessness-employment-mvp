@@ -2,14 +2,14 @@ import React from 'react'
 import '../styles/App.css'
 import { Switch, Route } from 'react-router-dom'
 import Home from './page/Home'
-// import ResetPassword from './page/ResetPassword'
-// import Login from './page/Login'
-// import Account from './page/Account'
+import ResetPassword from './page/ResetPassword'
+import Login from './page/Login'
+import Account from './page/Account'
 // import Orders from './page/Orders'
 // import Feedback from './page/Feedback'
 // import Payment from './page/Payment'
-// import ProtectedRoute from './routing/ProtectedRoute'
-// import UserManagementRoute from './routing/UserManagementRoute'
+import ProtectedRoute from './routing/ProtectedRoute'
+import UserManagementRoute from './routing/UserManagementRoute'
 import ThemeProvider from './provider/ThemeProvider'
 import UserProvider, { UserContext } from './provider/UserProvider'
 import { PATHS } from '../utils/constants'
@@ -31,7 +31,7 @@ const App = () => (
                                             <Route exact path={PATHS.HOME}>
                                                 <Home />
                                             </Route>
-                                            {/* <Route exact path={PATHS.LOGIN}>
+                                            <Route exact path={PATHS.LOGIN}>
                                                 <Login user={user} />
                                             </Route>
                                             <Route exact path={PATHS.SIGN_UP}>
@@ -49,7 +49,7 @@ const App = () => (
                                                 user={user}
                                                 Component={Account}
                                             />
-                                            <ProtectedRoute
+                                            {/* <ProtectedRoute
                                                 path={`${PATHS.BUY}/:productName`}
                                                 condition={user}
                                                 user={user}
