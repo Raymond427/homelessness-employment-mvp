@@ -6,14 +6,14 @@ import 'firebase/analytics'
 import 'firebase/messaging'
 
 const config = {
-    apiKey: '',
-    authDomain: 'example.firebaseapp.com',
-    databaseURL: 'https://example.firebaseio.com',
-    projectId: 'example',
-    storageBucket: 'example.appspot.com',
-    messagingSenderId: '',
-    appId: '',
-    measurementId: ''
+    apiKey: "AIzaSyAd2mbu45Di7BaeSzUVc_vN3RArc8ZKaYo",
+    authDomain: "homelessness-employment.firebaseapp.com",
+    databaseURL: "https://homelessness-employment.firebaseio.com",
+    projectId: "homelessness-employment",
+    storageBucket: "homelessness-employment.appspot.com",
+    messagingSenderId: "471265847473",
+    appId: "1:471265847473:web:63c7490b870b3f89651a90",
+    measurementId: "G-8Y77RTCQ59"
 }
 
 firebase.initializeApp(config)
