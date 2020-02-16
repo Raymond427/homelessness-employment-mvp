@@ -1,0 +1,30 @@
+.StripeElement {
+    background-color: var(--secondary-background-color);
+    border-radius: 5px;
+    padding: 13px 16px 3px 16px;
+    margin: 0.5rem 0;
+    height: calc(40px - 1rem);
+}
+
+@media (max-width: 768px) {
+    .StripeElement {
+        padding: 9px 16px 6px 16px;
+        height: 20px;
+    }
+}
+
+.payment-request-button-divisor {
+    text-align: center;
+    margin: 1rem auto;
+}
+
+.PaymentRequestButton {
+    background-color: var(--primary-background-color);
+}
+
+.PaymentRequestButton > div {
+    max-width: 20rem;
+    top: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+}

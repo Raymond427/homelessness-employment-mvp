@@ -1,0 +1,14 @@
+.Order {
+    text-align: center;
+    background-color: var(--secondary-background-color);
+    border-radius: 3px;
+    width: 16rem;
+    margin: 2rem auto;
+    padding: 0.5rem 1rem;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem auto;
+}

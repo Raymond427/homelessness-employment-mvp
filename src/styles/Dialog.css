@@ -1,0 +1,75 @@
+dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    max-width: calc(100vw - 6rem);
+    padding: 1rem;
+    background-color: var(--primary-background-color);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 5px;
+    margin: 0;
+}
+
+#iOS-export-icon {
+    width: 1rem;
+    margin: 0 0.3rem;
+}
+
+dialog button {
+    background: none;
+    border: none;
+    color: var(--primary-text-color);
+    height: 2rem;
+    width: auto;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--secondary-background-color);
+    top: 1.5rem;
+}
+
+.dialog-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.dialog-primary-button {
+    background-color: var(--primary-color);
+    color: var(--secondary-text-color);
+}
+
+.dialog-close-button {
+    position: absolute;
+    background-color: unset;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-weight: bold;
+}
+
+.dialog-close-button > svg {
+    width: 1rem;
+}
+
+dialog::backdrop { /* native */
+    z-index: 3;
+    background-color: rgba(0,0,0,0.4);
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    position: fixed;
+}
+
+dialog + .backdrop { /* polyfill */
+    z-index: 3;
+    background-color: rgba(0,0,0,0.4);
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    position: fixed;
+}

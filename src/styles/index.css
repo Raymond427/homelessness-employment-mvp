@@ -1,0 +1,69 @@
+html {
+    min-height: 100%;
+    font-size: 16px;
+    font-weight: lighter;
+    overflow-x: hidden;
+    --primary-color: #1484FF;
+    --primary-background-color: #121212;
+    --primary-text-color: #FFFFFF;
+    --primary-placeholder-color: #878787;
+    --secondary-background-color: #1D1D1D;
+    --secondary-text-color: #000000;
+    --tertiary-color: #CF6679;
+}
+
+html[data-theme="light"] {
+    --primary-background-color: #F4F5FA;
+    --primary-text-color: #121212;
+    --secondary-background-color: #E8E9EF;
+    --secondary-text-color: #121212;
+}
+
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *:before,
+html.theme-transition *:after {
+  transition: all 300ms !important;
+  transition-delay: 0 !important;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 320px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+body {
+    margin: 0;
+    background-color: var(--primary-background-color);
+    color: var(--primary-text-color);
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+}
+
+h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    text-align: center;
+    padding: 0 0.5rem;
+}
+
+body, input, select, option {
+    font-family: 'Roboto', sans-serif;
+}
+
+a, a:visited, a:focus {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--primary-color);
+}

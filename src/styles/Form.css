@@ -1,0 +1,39 @@
+.form {
+    max-width: 20rem;
+    margin: 1rem auto;
+    text-align: center;
+}
+
+.submission-error-message {
+    max-width: 15rem;
+    margin: 10px auto;
+    background-color: var(--tertiary-color);
+    color: var(--secondary-text-color);
+    border-radius: 5px;
+    padding: 5px 10px;
+    text-align: left;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.submission-error-message__text {
+    margin: 0 0 0 10px;
+}
+
+.info-icon {
+    min-width: 2rem;
+    min-height: 2rem;
+    max-width: 2rem;
+    max-height: 2rem;
+}
+
+.form-submit {
+    color: var(--secondary-text-color);
+    font-size: 1rem;
+}
+
+.form-submit > span > .WhiteLoadingGIF {
+    height: 1rem;
+}

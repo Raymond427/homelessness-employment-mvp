@@ -1,0 +1,11 @@
+.login-links, .login-links span {
+    margin: 10px auto;
+}
+
+.login-links span {
+    display: block;
+}
+
+.Login > .form {
+    max-width: 15rem;
+}

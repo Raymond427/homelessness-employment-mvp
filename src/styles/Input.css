@@ -1,0 +1,32 @@
+.field {
+    display: inline-block;
+    width: 100%;
+}
+
+.input {
+    background-color: var(--secondary-background-color);
+    color: var(--primary-text-color);
+    border: none;
+    border-radius: 5px;
+    height: 2.5rem;
+    font-size: 16px;
+    padding: 0 1rem;
+    margin: 0.5rem 0rem;
+    width: calc(100% - 2rem);
+}
+
+input:-webkit-autofill {
+    -webkit-text-fill-color: var(--primary-text-color);
+    box-shadow: 0 0 0px 1000px var(--secondary-background-color) inset;
+    -webkit-box-shadow: 0 0 0px 1000px var(--secondary-background-color) inset;
+}
+
+.input::placeholder {
+    color: var(--primary-placeholder-color);
+    font-size: 1rem;
+}
+
+.field-error {
+    color: var(--tertiary-color);
+    display: block;
+}

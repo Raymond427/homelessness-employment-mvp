@@ -1,0 +1,17 @@
+#feedback-field textarea {
+    font-family: inherit;
+    width: 12rem;
+    height: 10rem;
+    padding: 1rem 1rem;
+    resize: none;
+}
+
+.rating-button {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.rating__input-star {
+    margin: 0.5rem 0;
+}

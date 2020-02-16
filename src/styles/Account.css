@@ -1,0 +1,13 @@
+.account-links {
+    display: contents;
+    list-style: none;
+}
+
+.account-links li {
+    margin: 1rem 0;
+}
+
+#account-link-log-out {
+    cursor: pointer;
+    color: var(--primary-color);
+}

@@ -1,0 +1,56 @@
+.social-auth-button {
+    cursor: pointer;
+    height: 46px;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto;
+    border: none;
+}
+
+.social-auth-button span {
+    margin: auto 0.6rem;
+}
+
+#google-button {
+    width: 15.1rem;
+    background-color: white;
+    color: #757575;
+}
+
+#google-button:active {
+    background-color: #EEEEEE;
+}
+
+#facebook-button {
+    width: 17rem;
+    background-color: #3C5A99;
+    color: #FFFFFF;
+}
+
+#facebook-button svg {
+    height: inherit;
+}
+
+@media (max-width: 768px) {
+    .social-auth-button span {
+        margin: auto 0.2rem;
+    }
+
+    #facebook-button span {
+        margin-left: 0.8rem;
+    }
+}
+
+@media (max-width: 320px) {
+    #google-button span {
+        margin: auto 0rem;
+        width: 10rem;
+    }
+    
+    #facebook-button span {
+        margin-left: 0.7rem;
+    }
+}
