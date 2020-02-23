@@ -7,7 +7,7 @@ import Login from './page/Login'
 import Account from './page/Account'
 // import Orders from './page/Orders'
 // import Feedback from './page/Feedback'
-// import Payment from './page/Payment'
+import Payment from './page/Payment'
 import ProtectedRoute from './routing/ProtectedRoute'
 import UserManagementRoute from './routing/UserManagementRoute'
 import ThemeProvider from './provider/ThemeProvider'
@@ -49,14 +49,14 @@ const App = () => (
                                                 user={user}
                                                 Component={Account}
                                             />
-                                            {/* <ProtectedRoute
-                                                path={`${PATHS.BUY}/:productName`}
+                                            <ProtectedRoute
+                                                path={`${PATHS.BUY}/:doneeId`}
                                                 condition={user}
                                                 user={user}
-                                                products={[ { name: 'exampleProduct', price: 500 } ]}
+                                                donees={[ { id: '12345', name: 'exampleProduct', price: 500 } ]}
                                                 Component={Payment}
                                             />
-                                            <ProtectedRoute
+                                            {/* <ProtectedRoute
                                                 path={PATHS.FEEDBACK}
                                                 condition={user}
                                                 user={user}

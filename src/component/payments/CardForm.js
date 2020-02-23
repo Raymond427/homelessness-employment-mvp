@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Order from '../Order'
 import Form from '../form'
-import { capitalize, totalPrice } from '../../utils'
+import { capitalize, totalPrice, usdFormat, usdFormatToCents } from '../../utils'
 import { PROCESSING_FEE_RATE, THEMES } from '../../utils/constants'
 import { chargeWithToken } from '../../utils/payments'
-import { TextField } from '../form/input'
+import { TextField, USDField, RadioField } from '../form/input'
 import { CardElement } from 'react-stripe-elements'
 import { useHistory } from 'react-router-dom'
 import { formatPaymentErrorMessage } from '../../utils/errorMessages'
@@ -12,7 +12,7 @@ import { performanceMonitor, MAX_ATTRIBUTE_VALUE_LENGTH } from '../../firebase'
 import { ThemeContext } from '../provider/ThemeProvider'
 import { analytics } from '../../firebase'
 
-const CardForm = ({ user, stripe, product, PaymentButton }) => {
+const CardForm = ({ user, stripe, donee, PaymentButton }) => {
     const [ paymentSuccessful, setPaymentSuccessful] = useState(false)
     const [ paymentResult, setPaymentResult ] = useState('')
     const [ isLoading, setIsLoading ] = useState(false)
@@ -22,13 +22,14 @@ const CardForm = ({ user, stripe, product, PaymentButton }) => {
     const [ zipCode, setZipCode ] = useState('')
     const [ city, setCity ] = useState('')
     const [ state, setState ] = useState('')
+    const [ donationAmount, setDonationAmount ] = useState(0)
 
     const history = useHistory()
 
-    const capitalizedProductName = capitalize(product.name)
-    const processingFee = product.price * PROCESSING_FEE_RATE
+    const capitalizedDoneeName = capitalize(donee.name)
+    const processingFee = donationAmount === 0 ? 0 : (donationAmount * PROCESSING_FEE_RATE)
     const charges = [
-        { name: capitalizedProductName, price: product.price },
+        { name: capitalizedDoneeName, price: donationAmount },
         { name: 'Processing', price: processingFee }
     ]
     const totalCost = totalPrice(charges)
@@ -53,7 +54,7 @@ const CardForm = ({ user, stripe, product, PaymentButton }) => {
         stripe.createToken(cardData)
             .then(({ token }) => {
                 tokenCreationTrace.putAttribute('result', 'success')
-                chargeWithToken(token, product, user, totalCost, processingFee, setPaymentSuccessful, setPaymentResult, 'card')
+                chargeWithToken(token, donee, user, totalCost, processingFee, setPaymentSuccessful, setPaymentResult, 'card')
             })
             .catch(error => {
                 const errorMessage = formatPaymentErrorMessage(error)
@@ -69,9 +70,11 @@ const CardForm = ({ user, stripe, product, PaymentButton }) => {
 
     analytics.logEvent('begin_checkout', {
         currency: 'usd',
-        items: [ product.name ],
-        value: product.price
+        items: [ donee.name ],
+        value: donationAmount
     })
+
+    const onQuickSelectClick = value => setDonationAmount(value)
 
     return (
             <>
@@ -79,14 +82,18 @@ const CardForm = ({ user, stripe, product, PaymentButton }) => {
                     ?   <>
                             <h2>Payment Successful!</h2>
                             <p>We’ve sent a reciept to {user.email}</p>
-                            <Order productName={capitalizedProductName} charges={charges} />
-                            <button className="button" onClick={() => history.push(`/${product.name}`)}>View Product</button>
+                            <Order productName={capitalizedDoneeName} charges={charges} />
+                            <button className="button" onClick={() => history.push(`/${donee.name}`)}>View Product</button>
                         </>
                     :   <>
-                            <h2>Purchase {capitalizedProductName}</h2>
-                            <Order productName={capitalizedProductName} charges={charges} />
-                            <PaymentButton stripe={stripe} user={user} product={product} totalCost={totalCost} setPaymentResult={setPaymentResult} setPaymentSuccessful={setPaymentSuccessful} processingFee={processingFee} />
-                            <Form onSubmit={processPayment} submitting={isLoading} submitValue={'Buy'} submittingValue={'Processing...'} errorMessage={paymentResult} >
+                            <h2>Purchase {capitalizedDoneeName}</h2>
+                            <Form onSubmit={() => {}}>
+                                <RadioField labelText="Enter your donation amount" id="donation-quick-select" name="donation-quick-select" valueHook={onQuickSelectClick} options={[500, 1000, 2000].map(value => ({ value, text: usdFormat(value) }))} />
+                                <USDField id="donation-custom-amount" name="donation-custom-amount" valueHook={value => setDonationAmount(usdFormatToCents(value))} placeholder="or, you can enter a custom amount here" />
+                            </Form>
+                            <Order productName={capitalizedDoneeName} charges={charges} />
+                            <PaymentButton stripe={stripe} user={user} product={donee} totalCost={totalCost} setPaymentResult={setPaymentResult} setPaymentSuccessful={setPaymentSuccessful} processingFee={processingFee} />
+                            <Form onSubmit={processPayment} submitting={isLoading} submitValue={'Donate!'} submittingValue={'Processing...'} errorMessage={paymentResult} >
                                 <TextField id='name' required errorMessage='Please provide your name as it appears on your card' placeholder='Name' valueHook={setName} />
                                 <TextField id='street-address-1' required errorMessage='Please provide a valid street address' placeholder='Street Address' valueHook={setStreetAddress} />
                                 <TextField id='street-address-2' errorMessage='Please provide a valid street address' placeholder='Street Address 2' valueHook={setStreetAddress2} />

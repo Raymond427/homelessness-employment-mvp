@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { usdFormat, usdFormatToCents } from '../../../utils'
 
-const TextInput = ({ id, errorMessage, pattern, required, autoCompleteValues, initialValue, showErrors, onBlur, onValid, onInValid, valueHook, type, ...props }) => {
+const TextInput = ({ id, errorMessage, pattern, required, autoCompleteValues, initialValue, showErrors, onBlur, onValid, onInValid, valueHook, type, valueMasking, ...props }) => {
     const [ value, setValue ] = useState(initialValue || '')
     const isValid = () => {
         if (required && (!value || value === '')) {
@@ -29,7 +30,7 @@ const TextInput = ({ id, errorMessage, pattern, required, autoCompleteValues, in
         name: id,
         list: dataListName,
         onBlur: () => onBlur(isValid()),
-        onChange: event => setValue(event.target.value),
+        onChange: event => setValue(valueMasking ? valueMasking(event.target.value) : event.target.value),
         value
     }
 
@@ -49,3 +50,25 @@ const TextInput = ({ id, errorMessage, pattern, required, autoCompleteValues, in
 }
 
 export default TextInput
+
+export const MoneyInput = props => {
+    const dollarMasking = value => {
+        const formattedToUSD = /^\$?\d+(,\d{3})*\.?[0-9]?[0-9]?$/.test(value)
+        if (!formattedToUSD) {
+            const numberValue = Number(value)
+            if (isNaN(numberValue)) {
+                usdFormat(0, value.slice(value.length - 1))
+            } else {
+                usdFormat(numberValue)
+            }
+        }
+
+        const valueInCents = usdFormatToCents(value)
+        if (isNaN(valueInCents)) {
+            return usdFormat(0, value.slice(value.length - 1))
+        }
+        return usdFormat(valueInCents)
+    }
+
+    return <TextInput type="number" valueMasking={dollarMasking} initialValue="$0.00" {...props} />
+}

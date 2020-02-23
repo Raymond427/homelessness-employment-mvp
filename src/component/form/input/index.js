@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import TextInput from './Text'
+import TextInput, { MoneyInput } from './Text'
 import SelectInput from './Select'
 import Checkboxes from './Checkbox'
 import RadioInput from './Radio'
@@ -67,11 +67,15 @@ Field.propTypes = {
     labelText: PropTypes.string,
     required: PropTypes.bool,
     errorMessage: PropTypes.string,
-    input: PropTypes.func.isRequired
+    input: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
 }
 
 export const TextField = ({ type = 'text', ...props }) => (
     <Field type={type} input={TextInput} {...props} />
+)
+
+export const USDField = props => (
+    <Field input={MoneyInput} {...props} />
 )
 
 export const TextAreaField = props => (

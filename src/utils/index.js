@@ -10,7 +10,9 @@ export const usdFormat = num => new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2
 }).format(num / 100)
 
-export const totalPrice = purchasedItems => purchasedItems.reduce((total, { price }) => total + price, 0)
+export const usdFormatToCents = string => Number(string.slice(1).replace(/[$,.]/g, ''))
+
+export const totalPrice = purchasedItems => purchasedItems.reduce((total, { price }) => total + Number(price), 0)
 
 export const formatDate = timestamp => new Date(timestamp).toLocaleDateString("en-US", {
     year: 'numeric',

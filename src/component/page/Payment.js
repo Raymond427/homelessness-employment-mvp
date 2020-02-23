@@ -5,16 +5,16 @@ import PaymentRequestButton from '../payments/PaymentRequestButton'
 import CardForm from '../payments/CardForm'
 import Page from '.'
 
-const STRIPE_API_KEY = ''
+const STRIPE_API_KEY = 'pk_test_4rWg2XM8fvy3qPsCAl0sgHOW00EPrJ0oWu'
 
 const CheckoutForm = injectStripe(CardForm)
 const PaymentButton = injectStripe(PaymentRequestButton)
 
-const Payment = ({ user, products, computedMatch }) => {
+const Payment = ({ user, donees, computedMatch }) => {
     const [ stripe, setStripe ] = useState(null)
-    const productName = computedMatch.params.productName
+    const doneeId = computedMatch.params.doneeId
     
-    const product = products.find(product => product.name === productName)
+    const donee = donees.find(donee => donee.id === doneeId)
 
     useEffect(() => {
         window.Stripe
@@ -26,7 +26,7 @@ const Payment = ({ user, products, computedMatch }) => {
         <Page pageClassName="Payment">
             <StripeProvider stripe={stripe} apiKey={STRIPE_API_KEY}>
                 <Elements>
-                    <CheckoutForm user={user} product={product} PaymentButton={PaymentButton} />
+                    <CheckoutForm user={user} donee={donee} PaymentButton={PaymentButton} />
                 </Elements>
             </StripeProvider>
         </Page>

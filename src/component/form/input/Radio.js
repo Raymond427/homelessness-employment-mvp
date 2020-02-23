@@ -33,7 +33,7 @@ RadioInput.propTypes = {
     options: PropTypes.arrayOf(
         PropTypes.shape({
             text: PropTypes.string.isRequired,
-            value: PropTypes.string.isRequired
+            value: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]).isRequired
         })
     ).isRequired
 }
