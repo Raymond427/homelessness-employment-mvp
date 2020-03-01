@@ -1,0 +1,9 @@
+[
+    {
+        "id": "12345",
+        "name": "John Doe",
+        "amountDonated": 5000,
+        "description": "Mattis molestie a iaculis at erat pellentesque. Dolor purus non enim praesent elementum facilisis leo.",
+        "goal": 10000
+    }
+]

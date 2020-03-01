@@ -16,6 +16,8 @@ import { PATHS } from '../utils/constants'
 import OnlineProvider from './provider/OnlineProvider'
 import InstallPromptProvider, { InstallPromptConsumer } from './provider/InstallPromptProvider'
 import Dialog from './dialog'
+import donees from '../data/donees.json'
+import DonationRoute from './routing/DonationRoute'
 
 const App = () => (
     <InstallPromptProvider>
@@ -49,11 +51,11 @@ const App = () => (
                                                 user={user}
                                                 Component={Account}
                                             />
-                                            <ProtectedRoute
-                                                path={`${PATHS.BUY}/:doneeId`}
+                                            <DonationRoute
+                                                path={`${PATHS.DONATE}/:doneeId`}
                                                 condition={user}
                                                 user={user}
-                                                donees={[ { id: '12345', name: 'exampleProduct', price: 500 } ]}
+                                                donees={donees}
                                                 Component={Payment}
                                             />
                                             {/* <ProtectedRoute

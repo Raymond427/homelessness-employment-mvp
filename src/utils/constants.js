@@ -7,10 +7,11 @@ export const PATHS = {
     USER_MANAGEMENT: '/usermgmt',
     RESET_PASSWORD: '/reset-password',
     ACCOUNT: '/account',
-    BUY: '/buy',
+    DONATE: '/donate',
     FEEDBACK: '/feedback',
     ORDERS: '/orders',
-    EMAIL_US: `mailto:${COMPANY_EMAIL}`
+    EMAIL_US: `mailto:${COMPANY_EMAIL}`,
+    PROFILE: `/profile`
 }
 
 export const PAGE_TITLES = {
@@ -20,7 +21,7 @@ export const PAGE_TITLES = {
     '/usermgmt': 'User Management',
     '/reset-password': 'Reset Password',
     '/account': 'Account',
-    '/buy': 'Buy',
+    '/donate': 'Donate',
     '/feedback': 'Feedback',
     '/orders': 'Orders'
 }
