@@ -1,7 +1,7 @@
 .Order {
     text-align: center;
-    background-color: var(--secondary-background-color);
-    border-radius: 3px;
+    background-color: #6247AA;
+    border-radius: 0.75rem;
     width: 16rem;
     margin: 2rem auto;
     padding: 0.5rem 1rem;

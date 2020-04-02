@@ -1,0 +1,7 @@
+.button {
+    border-radius: 0.5rem;
+    font-weight: bold;
+    min-height: 3.5rem;
+    display: block;
+    min-width: 15rem;
+}

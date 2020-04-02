@@ -1,15 +1,19 @@
 .page {
-    margin-top: 7rem;
+    margin-top: 5rem;
     text-align: center;
 }
 
 .button {
-    border-radius: 5px;
-    background-color: var(--primary-color);
+	border-radius: 0.75rem;
+    font-weight: bold;
+    min-height: 3.5rem;
+    display: block;
+    min-width: 15rem;
     border: none;
-    height: 2.5rem;
     padding: 0 1rem;
-    margin: 1rem auto;
+	margin: 1rem auto;
+	background-color: #E2CFEA;
+	color: #102B3F
 }
 
 .button:hover {

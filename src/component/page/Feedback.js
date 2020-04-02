@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import { PATHS } from '../../utils/constants'
 import Page from '.'
 
-const FeedBackForm = ({ user, setPosted }) => {
+export const FeedBackForm = ({ user, setPosted }) => {
     const [ rating, setRating ] = useState(0)
     const [ comment, setComment ] = useState('')
     const [ isPosting, setIsPosting ] = useState(false)

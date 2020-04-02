@@ -1,0 +1,15 @@
+.Card {
+    background-color: #102B3F;
+    border-radius: 1.25rem;
+    padding: 1rem 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem; 
+}
+
+.Card h2 {
+    margin: 0.3rem 0;
+}
+
+.Card h3 {
+    font-size: 1.3rem;
+}

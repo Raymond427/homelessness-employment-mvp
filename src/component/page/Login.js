@@ -5,6 +5,7 @@ import Form from '../form'
 import '../../styles/Login.css'
 import { EmailField, PasswordField } from '../form/input'
 import SocialAuthButton from '../authentication/SocialAuthButton'
+import { NarrowCard } from '../Card'
 import { useLocation } from 'react-router-dom'
 import { PATHS, DIALOG } from '../../utils/constants'
 import { formatAuthErrorMessage } from '../../utils/errorMessages'
@@ -69,27 +70,28 @@ const SignInAndSignUp = ({ newUser, showDialog, addToHomeScreen }) => {
 
     return (
         <Page pageClassName="Login">
-            <h2>{newUser? 'Sign Up' : 'Sign In'}</h2>
-            <SocialAuthButton name="google" onClick={() => handleAuth(signInWithGoogle, 'google')} newUser={newUser} />
-            {/* <SocialAuthButton name="facebook" onClick={() => handleAuth(signInWithFacebook, 'facebook')} newUser={newUser} /> */}
-            <Form
-                onSubmit={genericAuth}
-                submitValue={newUser ? 'Sign Up' : 'Sign In'}
-                submittingValue={'Signing In...'}
-                submitting={isLoading}
-                errorMessage={authErrorMessage}
-            >
-                <EmailField valueHook={setEmail} />
-                <PasswordField valueHook={setPassword} />
-            </Form>
-            <p className='login-links'>
-                {newUser
-                    ? <span>Already have an account? <Link to={{pathname: PATHS.LOGIN, state: { newUser: false }}}>Sign In</Link></span>
-                    : <>
-                        <span>Don't have an account? <Link to={{pathname: PATHS.SIGN_UP, state: { newUser: true }}}>Sign Up</Link></span>
-                        <Link to={PATHS.RESET_PASSWORD}>Forgot Your Password?</Link>
-                      </>}
-            </p>
+            <NarrowCard title={newUser? 'Sign Up' : 'Sign In'}>
+                <SocialAuthButton name="google" onClick={() => handleAuth(signInWithGoogle, 'google')} newUser={newUser} />
+                {/* <SocialAuthButton name="facebook" onClick={() => handleAuth(signInWithFacebook, 'facebook')} newUser={newUser} /> */}
+                <Form
+                    onSubmit={genericAuth}
+                    submitValue={newUser ? 'Sign Up' : 'Sign In'}
+                    submittingValue={'Signing In...'}
+                    submitting={isLoading}
+                    errorMessage={authErrorMessage}
+                >
+                    <EmailField valueHook={setEmail} />
+                    <PasswordField valueHook={setPassword} />
+                </Form>
+                <p className='login-links'>
+                    {newUser
+                        ? <span>Already have an account? <Link to={{pathname: PATHS.LOGIN, state: { newUser: false }}}>Sign In</Link></span>
+                        : <>
+                            <span>Don't have an account? <Link to={{pathname: PATHS.SIGN_UP, state: { newUser: true }}}>Sign Up</Link></span>
+                            <Link to={PATHS.RESET_PASSWORD}>Forgot Your Password?</Link>
+                        </>}
+                </p>
+            </NarrowCard>
         </Page>
     )
 }

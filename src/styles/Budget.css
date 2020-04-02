@@ -1,0 +1,24 @@
+.budget-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.budget-item-cost {
+    text-align: right;
+}
+
+.budget-item-price, .budget-item-total-price, .budget-item-total {
+    font-weight: bold;
+}
+
+.budget-item {
+    margin: 0.3rem 0;
+}
+
+.budget-total {
+    margin-top: 0.5rem;
+}
+
+.budget-item-total-price, .budget-item-total {
+    font-size: 1.3rem;
+}

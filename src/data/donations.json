@@ -1,25 +1,49 @@
 [
     {
         "id": "2123",
+        "name": "Clifford Harris",
         "dateCreated": 1545035040000,
         "doneeId": "12345",
-        "name": "Jane Doe",
+        "donee": {
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        "charges": [
+            { "name": "donation", "price": 500 },
+            { "name": "processing", "price": 100 }
+        ],
         "amountDonated": 500,
         "message": "Hope this helps!"
     },
     {
         "id": "213112",
+        "name": "Earl Simmons",
         "dateCreated": 1516177440000,
         "doneeId": "12345",
-        "name": "Bob Doe",
+        "donee": {
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        "charges": [
+            { "name": "donation", "price": 500 },
+            { "name": "processing", "price": 100 }
+        ],
         "amountDonated": 700,
         "message": "Good luck! I hope you find the job you're looking for!"
     },
     {
         "id": "3928329",
+        "name": "Calvin Broadus",
         "dateCreated": 1518855840000,
         "doneeId": "12345",
-        "name": "Doe John",
+        "donee": {
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        "charges": [
+            { "name": "donation", "price": 500 },
+            { "name": "processing", "price": 100 }
+        ],
         "amountDonated": 1000,
         "message": "God bless you!"
     }

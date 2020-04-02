@@ -1,9 +1,10 @@
 .StripeElement {
-    background-color: var(--secondary-background-color);
+    background-color: #102B3F;
     border-radius: 5px;
     padding: 13px 16px 3px 16px;
     margin: 0.5rem 0;
     height: calc(40px - 1rem);
+    border: 1px solid #E2CFEA;
 }
 
 @media (max-width: 768px) {
@@ -27,4 +28,52 @@
     top: -1rem;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.radio__input {
+    visibility: hidden;
+    position: absolute;
+}
+
+#donation-quick-select {
+    margin: 1rem 0 0.5rem 0;
+}
+
+#donation-quick-select > .radio__label {
+    cursor: pointer;
+}
+
+#radio__label-donation-quick-select:first-child {
+    margin-right: 0.5rem;
+}
+
+#radio__label-donation-quick-select:last-child {
+    margin-left: 0.5rem;
+}
+
+#radio__label-donation-quick-select {
+    display: inline-block;
+    background-color: #102B3F;
+    color: #E2CFEA;
+    border: 1px #E2CFEA solid;
+    border-radius: 0.2rem;
+    width: 6rem;
+    padding: 1rem 0 1rem 0;
+    cursor: pointer;
+}
+
+.donation-quick-select-selected {
+    background-color: #E2CFEA !important;
+    color: #102B3F !important;
+    border: none !important;
+    font-weight: bold;
+}
+
+.donation-quick-select-selected > label {
+    font-weight: bold;
+}
+
+.completed-donation-img {
+    width: 15rem;
+    border-radius: 1rem;
 }

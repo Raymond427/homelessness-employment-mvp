@@ -1,7 +1,6 @@
 html {
     min-height: 100%;
     font-size: 16px;
-    font-weight: lighter;
     overflow-x: hidden;
     --primary-color: #1484FF;
     --primary-background-color: #121212;
@@ -41,7 +40,8 @@ html.theme-transition *:after {
 
 body {
     margin: 0;
-    background-color: var(--primary-background-color);
+    background-color: #6247AA;
+    /* background-color: var(--primary-background-color); */
     color: var(--primary-text-color);
     position: absolute;
     left: 0;
@@ -50,20 +50,16 @@ body {
 }
 
 h2, h3, h4, h5, h6 {
-    font-weight: normal;
-    text-align: center;
+    font-weight: 600;
     padding: 0 0.5rem;
 }
 
 body, input, select, option {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Baloo Chettan 2', cursive;
 }
 
 a, a:visited, a:focus {
     text-decoration: none;
-    color: var(--primary-color);
-}
-
-a:hover {
-    color: var(--primary-color);
+    color: #E2CFEA;
+    font-weight: normal;
 }

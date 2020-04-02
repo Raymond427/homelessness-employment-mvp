@@ -1,0 +1,44 @@
+.campaign-progress {
+    width: 18rem;
+    margin: 1rem auto;
+}
+
+.campaign-progress-bar {
+    display: block;
+    width: 100%;
+}
+
+.campaign-progress-bar[value]::-webkit-progress-value {
+    background-color: #6247AA;
+    border-radius: 1rem;
+}
+
+.campaign-progress-bar[value], .campaign-progress-bar[value]::-webkit-progress-bar {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #E2CFEA;
+    border-radius: 1.1rem;
+}
+
+.campaign-progress-amount-to-go {
+    margin-bottom: 0.3rem;
+    display: block;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.campaign-progress-amount-zero {
+    padding-top: 0.1rem;
+    float: left;
+}
+
+.campaign-progress-goal {
+    padding-top: 0.1rem;
+    float: right;
+    text-align: right;
+}
+
+.campaign-progress-patrons {
+    margin-top: 1rem;
+    display: block;
+}

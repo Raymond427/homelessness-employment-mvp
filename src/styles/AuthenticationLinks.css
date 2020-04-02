@@ -19,6 +19,7 @@
     color: var(--primary-text-color);
     font-size: 1.25rem;
     margin: 0 0.5rem;
+    font-weight: lighter;
 }
 
 .offline-label {

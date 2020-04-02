@@ -1,8 +1,8 @@
 #feedback-field textarea {
     font-family: inherit;
-    width: 12rem;
-    height: 10rem;
-    padding: 1rem 1rem;
+    width: 100%;
+    height: 5rem;
+    padding: 0.5rem 0.5rem;
     resize: none;
 }
 

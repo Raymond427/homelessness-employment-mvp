@@ -1,0 +1,14 @@
+.profile-info-story {
+    text-align: left;
+}
+
+.profile-orgs-img {
+    width: 12rem;
+    border-radius: 1rem;
+    float: left;
+    margin: 1rem;
+}
+
+.profile-orgs-description {
+    text-align: left;
+}

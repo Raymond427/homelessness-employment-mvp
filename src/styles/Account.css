@@ -9,5 +9,9 @@
 
 #account-link-log-out {
     cursor: pointer;
-    color: var(--primary-color);
+    color: #E2CFEA;
+}
+
+.account-links li a, #account-link-log-out {
+    font-weight: bold;
 }

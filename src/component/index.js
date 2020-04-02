@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { Profiler } from 'react'
 import '../styles/App.css'
 import { Switch, Route } from 'react-router-dom'
 import Home from './page/Home'
 import ResetPassword from './page/ResetPassword'
 import Login from './page/Login'
 import Account from './page/Account'
-// import Orders from './page/Orders'
+import Profile from './page/Profile'
+import Donations from './page/Donations'
 // import Feedback from './page/Feedback'
 import Payment from './page/Payment'
 import ProtectedRoute from './routing/ProtectedRoute'
@@ -18,6 +19,7 @@ import InstallPromptProvider, { InstallPromptConsumer } from './provider/Install
 import Dialog from './dialog'
 import donees from '../data/donees.json'
 import DonationRoute from './routing/DonationRoute'
+import ProfileRoute from './routing/ProfileRoute'
 
 const App = () => (
     <InstallPromptProvider>
@@ -39,6 +41,7 @@ const App = () => (
                                             <Route exact path={PATHS.SIGN_UP}>
                                                 <Login user={user} />
                                             </Route>
+                                            <ProfileRoute exact path={`${PATHS.PROFILE}/:doneeId`} Component={Profile} />
                                             <UserManagementRoute path={PATHS.USER_MANAGEMENT} />
                                             <ProtectedRoute
                                                 path={PATHS.RESET_PASSWORD}
@@ -58,18 +61,17 @@ const App = () => (
                                                 donees={donees}
                                                 Component={Payment}
                                             />
+                                            <ProtectedRoute
+                                                path={PATHS.DONATIONS}
+                                                condition={user}
+                                                user={user}
+                                                Component={Donations}
+                                            />
                                             {/* <ProtectedRoute
                                                 path={PATHS.FEEDBACK}
                                                 condition={user}
                                                 user={user}
                                                 Component={Feedback}
-                                            />
-                                            <ProtectedRoute
-                                                path={PATHS.ORDERS}
-                                                condition={user}
-                                                user={user}
-                                                orders={[{ id: '7asdf8asd', productName: "exampleOrder", datePurchased: Date.now(), charges: [ { name: "exampleOrder", price: 500 } ] }]}
-                                                Component={Orders}
                                             /> */}
                                         </Switch>
                                     )}

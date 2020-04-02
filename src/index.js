@@ -3,15 +3,12 @@ import ReactDOM from 'react-dom'
 import './styles/index.css'
 import App from './component'
 import { Router } from 'react-router-dom'
-import ScrollToTop from './component/ScrollToTop'
 import history from './history'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
     <Router history={history}>
-        <ScrollToTop>
-            <App />
-        </ScrollToTop>
+        <App />
     </Router>,
     document.getElementById('root')
 )

@@ -12,14 +12,16 @@ const RadioInput = ({ options, id, initialValue, showErrors, name, required, onB
         isValid() ? onValid() : onInValid()
     }, [])
 
+    const isSelectedButton = (value) => value === selectedValue
+
     return (
         <div id={id} className={`${showErrors ? `radio__wrapper--invalid radio__wrapper` : 'radio__wrapper'}`} onBlur={() => onBlur(isValid())} >
             {
                 options.map(
                     ({ value, text }, idx) => (
                         <span key={`input-${value}-${idx}`} className="radio__span" id={`radio__span-${id}`}>
-                            <input type='radio' className='radio__input' id={value} name={name} value={text} onClick={() => selectButton(value)} defaultChecked={initialValue === value} />
-                            <label className='radio__label' id={`radio__label-${id}`} htmlFor={value}>{text}</label>
+                            <input type='radio' className={`radio__input${isSelectedButton(value) ? ` ${id}-selected` : ''}`} id={value} name={name} value={text} onClick={() => selectButton(value)} defaultChecked={initialValue === value} />
+                            <label className={`radio__label${isSelectedButton(value) ? ` ${id}-selected` : ''}`} id={`radio__label-${id}`} htmlFor={value}>{text}</label>
                         </span>
                     )
                 )

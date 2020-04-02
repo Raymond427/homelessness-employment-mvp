@@ -4,6 +4,7 @@ import Form from '../form'
 import { PasswordField } from '../form/input'
 import { Redirect, withRouter } from 'react-router-dom'
 import { PATHS } from '../../utils/constants'
+import { NarrowCard } from '../Card'
 import Page from '.'
 
 const PasswordReset = withRouter(({ searchParams, history }) => {
@@ -70,7 +71,7 @@ const PasswordReset = withRouter(({ searchParams, history }) => {
         }
         if (!actionCodeVerified) {
             return (
-                <>
+                <NarrowCard>
                     <h2>Looks like your password reset link has expired</h2>
                     <button
                         className="button"
@@ -81,12 +82,12 @@ const PasswordReset = withRouter(({ searchParams, history }) => {
                     >
                         Get Another Link
                     </button>
-                </>
+                </NarrowCard>
             )
         } else {
             return passwordReset
             ?   (
-                    <>
+                    <NarrowCard>
                         <h2>Your password has been reset!</h2>
                         <button
                             className="button"
@@ -97,9 +98,9 @@ const PasswordReset = withRouter(({ searchParams, history }) => {
                         >
                             Log In
                         </button>
-                    </>
+                    </NarrowCard>
                 )
-            :   <>
+            :   <NarrowCard>
                     <h2>Reset Password for {email}</h2>
                     <Form
                         submitValue="Reset Password"
@@ -110,7 +111,7 @@ const PasswordReset = withRouter(({ searchParams, history }) => {
                     >
                         <PasswordField valueHook={setNewPassword} />
                     </Form>
-                </>
+                </NarrowCard>
         }
     }
 

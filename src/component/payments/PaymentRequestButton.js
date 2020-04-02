@@ -15,7 +15,7 @@ const PaymentRequestButton = ({ stripe, user, product, processingFee, totalCost,
             currency: 'usd',
             country: 'US',
             total: {
-                label: `Work After Work Profit Guide: ${capitalize(product.name)}`,
+                label: `Work After Work Profit Guide: ${capitalize(product.firstName)}`,
                 amount: totalCost,
             },
             requestPayerName: true,

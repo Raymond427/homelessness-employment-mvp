@@ -4,9 +4,9 @@
 }
 
 .input {
-    background-color: var(--secondary-background-color);
-    color: var(--primary-text-color);
-    border: none;
+    background-color: #102B3F;
+    color: #E2CFEA;
+    border: 1px solid #E2CFEA;
     border-radius: 5px;
     height: 2.5rem;
     font-size: 16px;
@@ -16,13 +16,14 @@
 }
 
 input:-webkit-autofill {
-    -webkit-text-fill-color: var(--primary-text-color);
-    box-shadow: 0 0 0px 1000px var(--secondary-background-color) inset;
-    -webkit-box-shadow: 0 0 0px 1000px var(--secondary-background-color) inset;
+    -webkit-text-fill-color: #E2CFEA;
+    box-shadow: 0 0 0px 1000px #102B3F inset;
+    -webkit-box-shadow: 0 0 0px 1000px #102B3F inset;
 }
 
 .input::placeholder {
-    color: var(--primary-placeholder-color);
+    color: #E2CFEA;
+    opacity: 0.7;
     font-size: 1rem;
 }
 

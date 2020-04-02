@@ -9,7 +9,7 @@ export const PATHS = {
     ACCOUNT: '/account',
     DONATE: '/donate',
     FEEDBACK: '/feedback',
-    ORDERS: '/orders',
+    DONATIONS: '/donations',
     EMAIL_US: `mailto:${COMPANY_EMAIL}`,
     PROFILE: `/profile`
 }
@@ -23,7 +23,7 @@ export const PAGE_TITLES = {
     '/account': 'Account',
     '/donate': 'Donate',
     '/feedback': 'Feedback',
-    '/orders': 'Orders'
+    '/donations': 'Donations'
 }
 
 export const THEMES = {

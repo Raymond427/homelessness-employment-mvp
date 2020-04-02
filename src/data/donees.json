@@ -1,9 +1,36 @@
 [
     {
         "id": "12345",
-        "name": "John Doe",
+        "img": "employment-headshot-mvp.jpg",
+        "firstName": "John",
+        "lastName": "Doe",
         "amountDonated": 5000,
-        "description": "Mattis molestie a iaculis at erat pellentesque. Dolor purus non enim praesent elementum facilisis leo.",
-        "goal": 10000
+        "description": "Wants to be a construction worker",
+        "story": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras semper auctor neque vitae tempus quam pellentesque. Risus ultricies tristique nulla aliquet enim tortor. In cursus turpis massa tincidunt dui ut ornare lectus. Vitae sapien pellentesque habitant morbi. Et odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Sed enim ut sem viverra",
+        "thankYouMessage": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras semper auctor neque vitae tempus quam pellentesque.",
+        "goal": 10000,
+        "donationCount": 7,
+        "plan": {
+            "steps": [
+                "Begin Campaign",
+                "Start Construction Course",
+                "Complete Construction Course",
+                "Work in Construction full-time"
+            ],
+            "status": 1
+        },
+        "budget": [
+            { "name": "Contruction Certificate", "price": 30000 },
+            { "name": "Construction Course Materials", "price": 25000 },
+            { "name": "Laptop", "price": 18000 },
+            { "name": "Traveling to and from course", "price": 18000 }
+        ],
+        "organizations": [
+            { 
+                "img": "employment-headshot-mvp.jpg",
+                "name": "Homeless Support Organization",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cras semper auctor neque vitae tempus quam pellentesque. Risus ultricies tristique nulla aliquet enim tortor. In cursus turpis massa tincidunt dui ut ornare lectus. Vitae sapien pellentesque habitant morbi. Et odio pellentesque diam volutpat"
+            }
+        ]
     }
 ]

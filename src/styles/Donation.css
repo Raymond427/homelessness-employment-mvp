@@ -1,0 +1,38 @@
+.donation-feed {
+    padding: 0.1rem 0;
+}
+
+.donation {
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0.3rem;
+}
+
+.account-icon {
+    margin-right: 0.5rem;
+}
+
+.donation-message, .donation-header {
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0.1rem 0;
+}
+
+.donation-header {
+    font-weight: bold;
+}
+
+.donation-message {
+    font-size: 0.9rem;
+}
+
+.donation-info {
+    display: inline-block;
+    text-align: left;
+    width: calc(100% - 3rem);
+}
+
+.donation-message {
+    text-overflow: ellipsis;
+}

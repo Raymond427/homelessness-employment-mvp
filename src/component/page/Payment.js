@@ -10,7 +10,7 @@ const STRIPE_API_KEY = 'pk_test_4rWg2XM8fvy3qPsCAl0sgHOW00EPrJ0oWu'
 const CheckoutForm = injectStripe(CardForm)
 const PaymentButton = injectStripe(PaymentRequestButton)
 
-const Payment = ({ user, donee, computedMatch }) => {
+const Payment = ({ user, donee }) => {
     const [ stripe, setStripe ] = useState(null)
     
     useEffect(() => {

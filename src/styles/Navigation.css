@@ -40,6 +40,8 @@
     left: 1rem;
     width: fit-content;
     top: 0.25rem;
+    background-color: #FF585C;
+    border-radius: 0.5rem;
 }
 
 .account-link {
