@@ -45,7 +45,7 @@ const Dialog = ({ addToHomeScreen, children }) => {
         if (type === DIALOG.IOS_INSTALL) {
             localStorage.setItem('installation_requested', 'true')
         }
-        const showNotificationDialog = (type === DIALOG.IOS_INSTALL || type === DIALOG.ANDROID_INSTALL) && Notification.permission === NOTIFICATION_PERMISSION_STATUS.DEFAULT
+        const showNotificationDialog = Notification && Notification.permission === NOTIFICATION_PERMISSION_STATUS.DEFAULT && (type === DIALOG.IOS_INSTALL || type === DIALOG.ANDROID_INSTALL)
         showNotificationDialog ? showDialog(DIALOG.NOTIFICATION_PERMISSION) : closeDialog()
     }
 

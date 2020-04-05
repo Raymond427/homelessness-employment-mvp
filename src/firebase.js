@@ -24,25 +24,33 @@ export const analytics = firebase.analytics()
 
 export const CLOUD_MESSAGING_IDENTITY_KEY = ''
 
-export const messaging = firebase.messaging()
+export let messaging, requestNotificationPermission
 
-// messaging.usePublicVapidKey(CLOUD_MESSAGING_IDENTITY_KEY)
+if (Notification && firebase.messaging.isSupported()) {
+    messaging = firebase.messaging()
 
-// messaging.onTokenRefresh(() => {
-//     const currentToken = sessionStorage.getItem('fcmToken')
-//     messaging.deleteToken(currentToken)
-//     messaging.getToken()
-//         .then(token => sessionStorage.setItem('fcmToken', token))
-// })
+    // messaging.usePublicVapidKey(CLOUD_MESSAGING_IDENTITY_KEY)
+    
+    messaging.onTokenRefresh(() => {
+        const currentToken = sessionStorage.getItem('fcmToken')
+        messaging.deleteToken(currentToken)
+        messaging.getToken()
+            .then(token => sessionStorage.setItem('fcmToken', token))
+    })
 
-// export const requestNotificationPermission = () => (
-//     messaging.requestPermission()
-//         .then(() => {
-//             messaging.getToken().then(token => sessionStorage.setItem('fcmToken', token))
-//             analytics.logEvent('notification_permission', { accepted: true })
-//         })
-//         .catch(() => analytics.logEvent('notification_permission', { accepted: false }))
-// )
+    messaging.onMessage((payload) => {
+        console.log('Message received. ', payload);
+    })
+    
+    requestNotificationPermission = () => (
+        messaging.requestPermission()
+            .then(() => {
+                messaging.getToken().then(token => sessionStorage.setItem('fcmToken', token))
+                analytics.logEvent('notification_permission', { accepted: true })
+            })
+            .catch(() => analytics.logEvent('notification_permission', { accepted: false }))
+    )
+}
 
 export const auth = firebase.auth()
 export const signInWithGoogle = () => {
