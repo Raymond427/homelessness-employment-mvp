@@ -7,6 +7,7 @@ import AndroidInstallDialog from './AndroidInstallDialog'
 import NotificationDialog from './NotificationDialog'
 import UpdateDialog from './UpdateDialog'
 import X from '../icon/X'
+import notificationsSupported from '../../firebase'
 
 export const { Provider, Consumer: DialogConsumer } = React.createContext()
 
@@ -45,7 +46,7 @@ const Dialog = ({ addToHomeScreen, children }) => {
         if (type === DIALOG.IOS_INSTALL) {
             localStorage.setItem('installation_requested', 'true')
         }
-        const showNotificationDialog = Notification && Notification.permission === NOTIFICATION_PERMISSION_STATUS.DEFAULT && (type === DIALOG.IOS_INSTALL || type === DIALOG.ANDROID_INSTALL)
+        const showNotificationDialog = notificationsSupported() && Notification.permission === NOTIFICATION_PERMISSION_STATUS.DEFAULT && (type === DIALOG.IOS_INSTALL || type === DIALOG.ANDROID_INSTALL)
         showNotificationDialog ? showDialog(DIALOG.NOTIFICATION_PERMISSION) : closeDialog()
     }
 

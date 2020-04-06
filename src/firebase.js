@@ -26,7 +26,9 @@ export const CLOUD_MESSAGING_IDENTITY_KEY = ''
 
 export let messaging, requestNotificationPermission
 
-if (Notification && firebase.messaging.isSupported()) {
+export const notificationsSupported = firebase.messaging.isSupported
+
+if (notificationsSupported()) {
     messaging = firebase.messaging()
 
     // messaging.usePublicVapidKey(CLOUD_MESSAGING_IDENTITY_KEY)
