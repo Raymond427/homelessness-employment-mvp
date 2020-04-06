@@ -4,8 +4,8 @@
 }
 
 .input {
-    background-color: #102B3F;
-    color: #E2CFEA;
+    background-color: var(--primary-background-color);
+    color: var(--secondary-color);
     border: 1px solid #E2CFEA;
     border-radius: 5px;
     height: 2.5rem;
@@ -16,14 +16,13 @@
 }
 
 input:-webkit-autofill {
-    -webkit-text-fill-color: #E2CFEA;
+    -webkit-text-fill-color: var(--secondary-color);
     box-shadow: 0 0 0px 1000px #102B3F inset;
     -webkit-box-shadow: 0 0 0px 1000px #102B3F inset;
 }
 
 .input::placeholder {
-    color: #E2CFEA;
-    opacity: 0.7;
+    color: var(--primary-placeholder-color);
     font-size: 1rem;
 }
 

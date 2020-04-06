@@ -27,7 +27,7 @@
 #facebook-button {
     width: 17rem;
     background-color: #3C5A99;
-    color: #FFFFFF;
+    color: var(--primary-text-color);
 }
 
 #facebook-button svg {

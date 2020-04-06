@@ -1,6 +1,6 @@
 .Order {
     text-align: center;
-    background-color: #6247AA;
+    background-color: var(--primary-color);
     border-radius: 0.75rem;
     width: 16rem;
     margin: 2rem auto;

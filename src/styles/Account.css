@@ -9,7 +9,7 @@
 
 #account-link-log-out {
     cursor: pointer;
-    color: #E2CFEA;
+    color: var(--secondary-color);
 }
 
 .account-links li a, #account-link-log-out {

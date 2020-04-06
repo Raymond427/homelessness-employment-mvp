@@ -9,14 +9,14 @@
 }
 
 .campaign-progress-bar[value]::-webkit-progress-value {
-    background-color: #6247AA;
+    background-color: var(--primary-color);
     border-radius: 1rem;
 }
 
 .campaign-progress-bar[value], .campaign-progress-bar[value]::-webkit-progress-bar {
     -webkit-appearance: none;
     appearance: none;
-    background-color: #E2CFEA;
+    background-color: var(--secondary-color);
     border-radius: 1.1rem;
 }
 

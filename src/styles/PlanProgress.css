@@ -18,13 +18,13 @@
     height: 0.75rem;
     border-radius: 100%;
     margin: 0 auto;
-    background-color: #6247AA;
+    background-color: var(--primary-color);
     z-index: 1;
     position: relative;
 }
 
 .plan-step-bridge {
-    background-color: #6247AA;
+    background-color: var(--primary-color);
     height: 0.2rem;
     position: relative;
     top: -0.45rem;

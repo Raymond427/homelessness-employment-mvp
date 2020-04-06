@@ -1,5 +1,5 @@
 .StripeElement {
-    background-color: #102B3F;
+    background-color: var(--primary-background-color);
     border-radius: 5px;
     padding: 13px 16px 3px 16px;
     margin: 0.5rem 0;
@@ -53,8 +53,8 @@
 
 #radio__label-donation-quick-select {
     display: inline-block;
-    background-color: #102B3F;
-    color: #E2CFEA;
+    background-color: var(--primary-background-color);
+    color: var(--secondary-color);
     border: 1px #E2CFEA solid;
     border-radius: 0.2rem;
     width: 6rem;
