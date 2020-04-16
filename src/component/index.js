@@ -7,6 +7,7 @@ import Login from './page/Login'
 import Account from './page/Account'
 import Profile from './page/Profile'
 import Donations from './page/Donations'
+import AboutUs from './page/AboutUs'
 // import Feedback from './page/Feedback'
 import Payment from './page/Payment'
 import ProtectedRoute from './routing/ProtectedRoute'
@@ -40,6 +41,9 @@ const App = () => (
                                             </Route>
                                             <Route exact path={PATHS.SIGN_UP}>
                                                 <Login user={user} />
+                                            </Route>
+                                            <Route exact path={PATHS.ABOUT_US}>
+                                                <AboutUs />
                                             </Route>
                                             <ProfileRoute exact path={`${PATHS.PROFILE}/:doneeId`} Component={Profile} />
                                             <UserManagementRoute path={PATHS.USER_MANAGEMENT} />

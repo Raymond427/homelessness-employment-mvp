@@ -12,7 +12,7 @@ const Order = ({ id, doneeName, dateCreated, charges, backgroundColor }) => (
             {charges.map(({ name, price }, idx) =>
                 <div className="item" key={`${name}-${idx}`}>
                     <span>{name === "donation" ? 'Donation' : capitalize(name) }</span>
-                    <span>{usdFormat(price)}</span>
+                    <span>{usdFormat(price || 0)}</span>
                 </div>
             )}
             <div className="item">

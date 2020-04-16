@@ -1,8 +1,30 @@
+.DoneeThumbnail {
+    float: right;
+    position: relative;
+    right: 3rem;
+    top: -25rem;
+    font-size: 0.8rem;
+}
+
 .donee-img {
+    object-fit: cover;
     border-radius: 1.25rem;
-    width: 23rem;
+    width: 20rem;
+    height: 21rem;
+}
+
+.donee-thumbnail {
+    width: 5rem;
 }
 
 .donee-thumbnail__desc {
     margin: 0.3rem 0;
+}
+
+@media (max-width: 940px) {
+    .DoneeThumbnail {
+        float: unset;
+        position: static;
+        right: unset;
+    }
 }

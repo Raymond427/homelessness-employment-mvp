@@ -52,6 +52,7 @@
     top: 0;
     right: 1rem;
     width: 3.3rem;
+    color: var(--primary-background-color);
 }
 
 .theme-toggle-button {

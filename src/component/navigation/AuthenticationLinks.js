@@ -7,8 +7,8 @@ import { PATHS } from '../../utils/constants'
 
 const SignInAndSignUpLinks = ({ onHomePage }) => (
     <div className="AuthenticationLinks">
-        <Link to={{pathname: PATHS.LOGIN, state: { newUser: false }}} style={{ color: onHomePage ? '#FFFFFF' : 'var(--primary-text-color)' }}>Sign In</Link>
-        <Link to={{pathname: PATHS.SIGN_UP, state: { newUser: true }}} style={{ color: onHomePage ? '#FFFFFF' : 'var(--primary-text-color)' }}>Sign Up</Link>
+        <Link to={{pathname: PATHS.LOGIN, state: { newUser: false }}} style={{ color: onHomePage ? '#FFFFFF' : 'var(--primary-background-color)' }}>Sign In</Link>
+        <Link to={{pathname: PATHS.SIGN_UP, state: { newUser: true }}} style={{ color: onHomePage ? '#FFFFFF' : 'var(--primary-background-color)' }}>Sign Up</Link>
     </div>
 )
 

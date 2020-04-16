@@ -27,13 +27,14 @@ const CardForm = ({ user, stripe, donee, PaymentButton }) => {
     const [ state, setState ] = useState('')
     const [ donationAmount, setDonationAmount ] = useState(0)
     const [donationMessage, setDonationMessage ] = useState('')
+    const [ showCustomInput, setShowCustomInput ] = useState(false)
 
     const history = useHistory()
 
     const capitalizedDoneeName = capitalize(donee.firstName)
-    const processingFee = donationAmount === 0 ? 0 : (donationAmount * PROCESSING_FEE_RATE)
+    const processingFee = donationAmount === 0 || isNaN(donationAmount) ? 0 : (donationAmount * PROCESSING_FEE_RATE)
     const charges = [
-        { name: capitalizedDoneeName, price: donationAmount },
+        { name: capitalizedDoneeName, price: isNaN(donationAmount) ? 0 : donationAmount },
         { name: 'Processing', price: processingFee }
     ]
     const totalCost = totalPrice(charges)
@@ -78,7 +79,10 @@ const CardForm = ({ user, stripe, donee, PaymentButton }) => {
         value: donationAmount
     })
 
-    const onQuickSelectClick = value => setDonationAmount(value)
+    const onQuickSelectClick = value => {
+        setShowCustomInput(value === 'Custom Amount')
+        setDonationAmount(value)
+    }
 
     return (
             <>
@@ -97,8 +101,8 @@ const CardForm = ({ user, stripe, donee, PaymentButton }) => {
                         </NarrowCard>
                     :   <NarrowCard title={`Donate to ${capitalizedDoneeName}`}>
                             <Form onSubmit={processPayment} submitting={isLoading} submitValue={'Donate!'} submittingValue={'Processing...'} errorMessage={paymentResult} >
-                                <RadioField labelText="Enter your donation amount" id="donation-quick-select" name="donation-quick-select" valueHook={onQuickSelectClick} options={[500, 1000, 2000].map(value => ({ value, text: usdFormat(value) }))} />
-                                <USDField id="donation-custom-amount" name="donation-custom-amount" valueHook={value => setDonationAmount(usdFormatToCents(value))} placeholder="or, you can enter a custom amount here" />
+                                <RadioField labelText="Enter your donation amount" id="donation-quick-select" name="donation-quick-select" valueHook={onQuickSelectClick} options={[500, 1000, 2000, 'Custom Amount'].map(value => ({ value, text: isNaN(value) ? value : usdFormat(value) }))} />
+                                {showCustomInput && <USDField id="donation-custom-amount" name="donation-custom-amount" valueHook={value => setDonationAmount(usdFormatToCents(value))} placeholder="or, you can enter a custom amount here" />}
                                 <TextField id="donation-message" placeholder={`You can leave a message for ${donee.firstName} here!`} valueHook={setDonationMessage} />
                                 <Order backgroundColor="#6247AA" productName={capitalizedDoneeName} charges={charges} />
                                 <PaymentButton stripe={stripe} user={user} product={donee} totalCost={totalCost} setPaymentResult={setPaymentResult} setPaymentSuccessful={setPaymentSuccessful} processingFee={processingFee} />
@@ -110,7 +114,7 @@ const CardForm = ({ user, stripe, donee, PaymentButton }) => {
                                 <TextField id='state' required errorMessage='Please provide a state' placeholder='State' valueHook={setState} />
                                 <ThemeContext.Consumer>
                                     {({ theme }) => (
-                                    <CardElement style={{base: { fontSize: '14px', color: '#E2CFEA', "::placeholder": { color: '#E2CFEA' } }}} />
+                                        <CardElement style={{base: { fontSize: '14px', color: '#E2CFEA', "::placeholder": { color: '#E2CFEA' } }}} />
                                     )}
                                 </ThemeContext.Consumer>
                             </Form>

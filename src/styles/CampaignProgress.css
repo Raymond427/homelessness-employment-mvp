@@ -1,6 +1,6 @@
 .campaign-progress {
-    width: 18rem;
-    margin: 1rem auto;
+    width: 15rem;
+    margin: 0.5rem auto;
 }
 
 .campaign-progress-bar {
@@ -25,6 +25,10 @@
     display: block;
     font-weight: bold;
     font-size: 0.9rem;
+}
+
+.campaign-progress-amount-zero, .campaign-progress-goal, .campaign-progress-patrons {
+    font-size: 0.75rem;
 }
 
 .campaign-progress-amount-zero {

@@ -24,15 +24,12 @@
 }
 
 .donation-message {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
 }
 
 .donation-info {
     display: inline-block;
     text-align: left;
     width: calc(100% - 3rem);
-}
-
-.donation-message {
-    text-overflow: ellipsis;
 }

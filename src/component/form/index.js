@@ -56,11 +56,14 @@ const Form = ({ children, onSubmit, submitValue = 'Submit', submittingValue, sub
     const addToInValidFields = name => setInvalidFeilds(fields => [ ...fields, name ])
     const removeFromInValidFields = name => setInvalidFeilds(fields => fields.filter(fieldName => fieldName !== name))
 
-    const formContents = Children.map(children, child =>
-        child.props.valueHook
+    const formContents = Children.map(children, child => {
+        if (!child) {
+            return child
+        }
+        return child.props.valueHook
             ? cloneElement(child, { submissionAttempted, addToInValidFields, removeFromInValidFields })
             : cloneElement(child)
-    )
+    })
 
     return (
         <form className='form' id={id || null}>

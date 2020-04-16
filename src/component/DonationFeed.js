@@ -14,12 +14,13 @@ export const Donation = ({ name, amountDonated, message }) => (
     </div>
 )
 
-const DonationFeed = ({ doneeId }) => (
+const DonationFeed = ({ doneeId, limit = 3 }) => (
     <div className="donation-feed">
         {donations
         .filter(donation => donation.doneeId === doneeId)
             .sort((a, b) => a.dateCreated < b.dateCreated)
-                .map(donation => <Donation key={donation.id} {...donation} />)}
+                .map(donation => <Donation key={donation.id} {...donation} />)
+                    .slice(0, limit)}
     </div>
 )
 
