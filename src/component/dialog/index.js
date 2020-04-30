@@ -6,12 +6,13 @@ import IOSInstallDialog from './IOSInstallDialog'
 import AndroidInstallDialog from './AndroidInstallDialog'
 import NotificationDialog from './NotificationDialog'
 import UpdateDialog from './UpdateDialog'
+import ShareDialog from './ShareDialog'
 import X from '../icon/X'
 import notificationsSupported from '../../firebase'
 
 export const { Provider, Consumer: DialogConsumer } = React.createContext()
 
-const DialogContent = ({ type, addToHomeScreen, onClose }) => {
+const DialogContent = ({ type, addToHomeScreen, onClose, dialogProps }) => {
     switch (type) {
         case DIALOG.IOS_INSTALL:
             return <IOSInstallDialog />
@@ -21,6 +22,8 @@ const DialogContent = ({ type, addToHomeScreen, onClose }) => {
             return <NotificationDialog onClose={onClose} />
         case DIALOG.UPDATE_AVAILABLE:
             return <UpdateDialog onClose={onClose} />
+        case DIALOG.SHARE:
+            return <ShareDialog onClose={onClose} {...dialogProps} />
         default:
     }
 }
@@ -28,6 +31,7 @@ const DialogContent = ({ type, addToHomeScreen, onClose }) => {
 const Dialog = ({ addToHomeScreen, children }) => {
     const [ showing, setShowing ] = useState(false)
     const [ type, setType ] = useState('')
+    const [ dialogProps, setDialogProps ] = useState(null)
     const dialogRef = createRef()
 
     const closeDialog = () => {
@@ -37,12 +41,17 @@ const Dialog = ({ addToHomeScreen, children }) => {
         setShowing(false)
     }
 
-    const showDialog = dialogContentType => {
+    const showDialog = (dialogContentType, dialogProps) => {
         setType(dialogContentType)
+        setDialogProps(dialogProps)
         setShowing(true)
     }
 
     const onClose = () => {
+        if (type !== DIALOG.IOS_INSTALL && type !== DIALOG.ANDROID_INSTALL) {
+            closeDialog()
+            return
+        }
         if (type === DIALOG.IOS_INSTALL) {
             localStorage.setItem('installation_requested', 'true')
         }
@@ -83,7 +92,7 @@ const Dialog = ({ addToHomeScreen, children }) => {
             {showing && (
                 <dialog ref={dialogRef}>
                     <button className="dialog-close-button" onClick={onClose}><X /></button>
-                    <DialogContent type={type} addToHomeScreen={addToHomeScreen} onClose={onClose} />
+                    <DialogContent type={type} addToHomeScreen={addToHomeScreen} onClose={onClose} dialogProps={dialogProps} />
                 </dialog>
             )}
             {children}

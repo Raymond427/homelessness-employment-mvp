@@ -6,6 +6,7 @@ import Card from './Card'
 import Button from './Button'
 import CampaignProgress from './CampaignProgress'
 import '../styles/DoneeThumbnail.css'
+import ShareButton, { shareData } from './ShareButton'
 
 const DoneeThumbnail = ({ id, img, firstName, lastName, goal, amountDonated, donationCount, description }) => {
     const history = useHistory()
@@ -22,6 +23,7 @@ const DoneeThumbnail = ({ id, img, firstName, lastName, goal, amountDonated, don
                 <p className="donee-thumbnail__desc">{description}</p>
                 <CampaignProgress amountDonated={amountDonated} goal={goal} donationCount={donationCount} />
                 <Button onClick={() => history.push(`${PATHS.PROFILE}/${id}`)}>Learn More About John</Button>
+                <ShareButton theme={'icon'} shareData={shareData(`${PATHS.PROFILE}/${id}`)} />
                 <DonationFeed doneeId={id} limit={2} />
             </Card>
         </div>

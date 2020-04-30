@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Order from '../Order'
 import Form from '../form'
 import { capitalize, totalPrice, usdFormat, usdFormatToCents } from '../../utils'
-import { PROCESSING_FEE_RATE, THEMES } from '../../utils/constants'
+import { PROCESSING_FEE_RATE, THEMES, PATHS } from '../../utils/constants'
 import { chargeWithToken } from '../../utils/payments'
 import { TextField, USDField, RadioField } from '../form/input'
 import { CardElement } from 'react-stripe-elements'
@@ -14,6 +14,7 @@ import { analytics } from '../../firebase'
 import { NarrowCard } from '../Card'
 import { FeedBackForm } from '../page/Feedback'
 import { Donation } from '../DonationFeed'
+import ShareButton, { shareData } from '../ShareButton'
 
 const CardForm = ({ user, stripe, donee, PaymentButton }) => {
     const [ paymentSuccessful, setPaymentSuccessful] = useState(false)
@@ -91,6 +92,7 @@ const CardForm = ({ user, stripe, donee, PaymentButton }) => {
                             <h3>Here's a message from {donee.firstName}</h3>
                             <img className="completed-donation-img" src={require(`../../img/employment-headshot-mvp.jpg`)} alt={`${donee.firstName} ${donee.lastName}`} />
                             <p>{donee.thankYouMessage}</p>
+                            <ShareButton theme={'icon'} shareData={shareData(`${PATHS.PROFILE}/${donee.id}`)} />
                             <h4>We’ve sent a reciept to {user.email}</h4>
                             <Order productName={capitalizedDoneeName} charges={charges} />
                             <h4>Here's how your donation will appear on {donee.firstName}'s campaign</h4>

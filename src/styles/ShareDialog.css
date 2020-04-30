@@ -1,0 +1,9 @@
+.ShareButton-header {
+    padding: 0 3rem;
+}
+
+.ShareButton-link-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}

@@ -9,6 +9,7 @@ import DonationFeed from '../DonationFeed'
 import Budget from '../Budget'
 import '../../styles/Profile.css'
 import PlanProgress from '../PlanProgress'
+import ShareButton, { shareData } from '../ShareButton'
 
 export default ({ donee }) => {
     const history = useHistory()
@@ -19,6 +20,7 @@ export default ({ donee }) => {
             <NarrowCard className="profile-info" title="John wants to work in construction">
                 <CampaignProgress amountDonated={donee.amountDonated} goal={donee.goal} donationCount={donee.donationCount} />
                 <Button onClick={() => history.push(`${PATHS.DONATE}/${donee.id}`)}>Donate Now!</Button>
+                <ShareButton theme={'icon'} shareData={shareData(`${PATHS.PROFILE}/${donee.id}`)} />
                 <h3>{`${donee.firstName}'s Story`}</h3>
                 <p className="profile-info-story">{`${donee.story}`}</p>
             </NarrowCard>

@@ -45,5 +45,10 @@ export const DIALOG = {
     IOS_INSTALL: 'ios-install',
     ANDROID_INSTALL: 'android-install',
     NOTIFICATION_PERMISSION: 'notification_permission',
-    UPDATE_AVAILABLE: 'update_available'
+    UPDATE_AVAILABLE: 'update_available',
+    SHARE: 'share'
 }
+
+export const BASE_URL = 'https://pivotfund.org'
+
+export const FULL_URL = path => `${BASE_URL}${path}`
