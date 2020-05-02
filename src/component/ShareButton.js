@@ -4,14 +4,16 @@ import { DialogConsumer } from './dialog'
 import { DIALOG, FULL_URL } from '../utils/constants'
 import Share from './icon/Share'
 import '../styles/ShareButton.css'
+import { analytics } from '../firebase'
 
 const shareContent = (showDialog, shareData) => {
     const navigatorShareAvailable = 'share' in navigator
+    analytics.logEvent('share_button_click')
 
     if (navigatorShareAvailable) {
         navigator.share(shareData)
-            .then(() => console.log('shared!'))
-                .catch(() => console.log('failed!'))
+            .then(() => analytics.logEvent('share', { type: 'native', path: shareData.path }))
+                .catch(error => analytics.logEvent('native_share_failure', { error }))
     } else {
         showDialog(DIALOG.SHARE, shareData)
     }

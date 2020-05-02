@@ -1,6 +1,7 @@
 import React from 'react'
 import { FULL_URL } from '../../utils/constants'
 import '../../styles/ShareDialog.css'
+import { analytics } from '../../firebase'
 
 const ShareDialog = ({ path }) => {
     const faceBookShareURL = `https://www.facebook.com/sharer.php?u=${FULL_URL(path)}`
@@ -11,9 +12,9 @@ const ShareDialog = ({ path }) => {
         <>
             <h3 className="ShareButton-header">Share this campaign with your friends!</h3>
             <div className="ShareButton-link-wrapper">
-                <a className="ShareButton-link" href={faceBookShareURL} target="_blank" rel="noopener noreferrer">Facebook</a>
-                <a className="ShareButton-link" href={twitterShareURL} target="_blank" rel="noopener noreferrer">Twitter</a>
-                <a className="ShareButton-link" href={linkedInShareURL} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a className="ShareButton-link" onClick={analytics.logEvent('share', { type: 'modal', path, platform: 'facebook' })} href={faceBookShareURL} target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a className="ShareButton-link" onClick={analytics.logEvent('share', { type: 'modal', path, platform: 'twitter' })} href={twitterShareURL} target="_blank" rel="noopener noreferrer">Twitter</a>
+                <a className="ShareButton-link" onClick={analytics.logEvent('share', { type: 'modal', path, platform: 'linkedin' })} href={linkedInShareURL} target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </div>
         </>
     )
