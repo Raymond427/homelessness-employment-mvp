@@ -70,5 +70,5 @@ export const MoneyInput = props => {
         return usdFormat(valueInCents)
     }
 
-    return <TextInput type="number" valueMasking={dollarMasking} initialValue="$0.00" {...props} />
+    return <TextInput {...props} type="tel" valueMasking={dollarMasking} initialValue="$0.00" />
 }

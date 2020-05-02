@@ -1,4 +1,4 @@
-import React, { Profiler } from 'react'
+import React from 'react'
 import '../styles/App.css'
 import { Switch, Route } from 'react-router-dom'
 import Home from './page/Home'
@@ -8,7 +8,6 @@ import Account from './page/Account'
 import Profile from './page/Profile'
 import Donations from './page/Donations'
 import AboutUs from './page/AboutUs'
-// import Feedback from './page/Feedback'
 import Payment from './page/Payment'
 import ProtectedRoute from './routing/ProtectedRoute'
 import UserManagementRoute from './routing/UserManagementRoute'
@@ -19,7 +18,7 @@ import OnlineProvider from './provider/OnlineProvider'
 import InstallPromptProvider, { InstallPromptConsumer } from './provider/InstallPromptProvider'
 import Dialog from './dialog'
 import donees from '../data/donees.json'
-import DonationRoute from './routing/DonationRoute'
+import DonateRoute from './routing/DonateRoute'
 import ProfileRoute from './routing/ProfileRoute'
 
 const App = () => (
@@ -58,7 +57,7 @@ const App = () => (
                                                 user={user}
                                                 Component={Account}
                                             />
-                                            <DonationRoute
+                                            <DonateRoute
                                                 path={`${PATHS.DONATE}/:doneeId`}
                                                 condition={user}
                                                 user={user}
@@ -71,12 +70,6 @@ const App = () => (
                                                 user={user}
                                                 Component={Donations}
                                             />
-                                            {/* <ProtectedRoute
-                                                path={PATHS.FEEDBACK}
-                                                condition={user}
-                                                user={user}
-                                                Component={Feedback}
-                                            /> */}
                                         </Switch>
                                     )}
                                 </UserContext.Consumer>

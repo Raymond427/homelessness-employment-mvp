@@ -4,6 +4,7 @@ import 'firebase/auth'
 import 'firebase/performance'
 import 'firebase/analytics'
 import 'firebase/messaging'
+import 'firebase/functions'
 
 const config = {
     apiKey: "AIzaSyAd2mbu45Di7BaeSzUVc_vN3RArc8ZKaYo",
@@ -76,8 +77,7 @@ const firestore = firebase.firestore()
 firestore.settings({})
 firestore.enablePersistence()
 export const postFeedback = feedback => firestore.collection('/feedback').add(feedback)
-export const getOrders = uid => firestore.collection('/orders').where('userId', '==', uid).orderBy('datePurchased', 'desc').get()
-export const orderSubscription = uid => firestore.collection('/orders').where('userId', '==', uid).orderBy('datePurchased', 'desc')
-export const postOrder = order => firestore.collection('/orders').add(order)
+export const getDonations = uid => firestore.collection('/donations').where('donorId', '==', uid).orderBy('datePurchased', 'desc').get()
+export const DonationSubscription = uid => firestore.collection('/donations').where('donorId', '==', uid).orderBy('datePurchased', 'desc')
 
 export default firebase

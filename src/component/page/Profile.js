@@ -10,9 +10,23 @@ import Budget from '../Budget'
 import '../../styles/Profile.css'
 import PlanProgress from '../PlanProgress'
 import ShareButton, { shareData } from '../ShareButton'
+import { analytics } from '../../firebase'
+import { capitalize } from '../../utils'
 
 export default ({ donee }) => {
     const history = useHistory()
+    analytics.logEvent(
+        'checkout_progress',
+        {
+            items: {
+                id: donee.id,
+                name: `${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
+                category: "Campaign Donation",
+                list_position: 1,
+                quantity: 1
+            }
+        }
+    )
     
     return (
         <Page pageClassName="Profile">

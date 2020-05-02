@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { orderSubscription } from '../../firebase'
+import { donationSubscription } from '../../firebase'
 
 export const { Provider, Consumer } = React.createContext()
 export const OrderConsumer = Consumer
@@ -16,7 +16,7 @@ export default ({ user, children }) => {
 
     useEffect(() => {
         if (user) {
-            unSubscribeFromOrders = orderSubscription(user.uid, updateOrders).onSnapshot(updateOrders)
+            unSubscribeFromOrders = donationSubscription(user.uid, updateOrders).onSnapshot(updateOrders)
             return unSubscribeFromOrders
         } else {
             setOrders([])

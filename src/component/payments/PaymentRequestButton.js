@@ -1,62 +1,121 @@
 import React, { useState, useEffect } from 'react'
-import { PaymentRequestButtonElement } from 'react-stripe-elements'
+import { PaymentRequestButtonElement } from '@stripe/react-stripe-js'
 import { ThemeContext } from '../provider/ThemeProvider'
-import { chargeWithToken } from '../../utils/payments'
 import { capitalize } from '../../utils'
-import { performanceMonitor, MAX_ATTRIBUTE_VALUE_LENGTH, analytics } from '../../firebase'
-import { formatPaymentErrorMessage } from '../../utils/errorMessages'
+import { paymentIntentArgsFactory, handlePaymentError } from '../../utils/payments'
+import firebase, { performanceMonitor, analytics } from '../../firebase'
 
-const PaymentRequestButton = ({ stripe, user, product, processingFee, totalCost, setPaymentSuccessful, setPaymentResult }) => {
+const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, donationMessage, processingFee, setIsLoading, setPaymentResult, setPaymentSuccessful, ...chargePayload }) => {
     const [ canMakePayment, setCanMakePayment ] = useState(false)
     const [ paymentRequest, setPaymentRequest ] = useState(null)
 
-    useEffect(() => {
-        const paymentRequest = stripe.paymentRequest({
-            currency: 'usd',
-            country: 'US',
-            total: {
-                label: `Work After Work Profit Guide: ${capitalize(product.firstName)}`,
-                amount: totalCost,
+    const paymentRequestArgs = {
+        currency: 'usd',
+        displayItems: [
+            {
+                label: `${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
+                amount: Math.round((isNaN(donationAmount) || !donationAmount) ? 0 : donationAmount)
             },
-            requestPayerName: true,
-            requestPayerEmail: true,
-        })
+            {
+                label: `Processing`,
+                amount: Math.round(processingFee || 0)
+            }
+        ],
+        total: {
+            label: `Donation to ${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
+            amount: Math.round(totalCost)
+        },
+        requestPayerName: true,
+        requestPayerEmail: true
+    }
 
-        const canMakePaymentTrace = performanceMonitor.trace()
-        canMakePaymentTrace.start()
-        paymentRequest.canMakePayment()
-            .then(result => {
-                canMakePaymentTrace.putAttribute('result', 'success')
-                analytics.logEvent('payment_request_button_available', { available: `${result}` })
-                setCanMakePayment(result)
+    const paymentRequestUpdateArgs = { displayItems: paymentRequestArgs.displayItems, total: paymentRequestArgs.total }
+
+    useEffect(() => {
+        if (stripe) {
+            const paymentRequest = stripe.paymentRequest({ country: 'US', requestPayerName: true, requestPayerEmail: true, ...paymentRequestArgs })
+
+            const canMakePaymentTrace = performanceMonitor.trace()
+            canMakePaymentTrace.start()
+    
+            const checkPaymentRequestButtonAvailable = async () => {
+                const paymentRequestButtonAvailable = await paymentRequest.canMakePayment()
+    
+                if (paymentRequestButtonAvailable) {
+                    canMakePaymentTrace.putAttribute('result', 'success')
+                    analytics.logEvent('payment_request_button_available', { available: `${paymentRequestButtonAvailable}` })
+                    setCanMakePayment(paymentRequestButtonAvailable)
+                }
+    
+                canMakePaymentTrace.stop()
+            }
+    
+            checkPaymentRequestButtonAvailable()
+    
+            setPaymentRequest(paymentRequest)
+        }
+    }, [ stripe ])
+
+    useEffect(() => {
+        if (paymentRequest) {
+            paymentRequest.update(paymentRequestUpdateArgs)
+        }
+
+        if (paymentRequest) {
+            paymentRequest.on('paymentmethod', async event => {
+                if (donationAmount === 0) {
+                    setPaymentResult('Please enter an amount greater than zero')
+                    return
+                }
+
+                setIsLoading(true)
+
+                try {
+                    const createPaymentIntent = firebase.functions().httpsCallable('createPaymentIntent')
+                    const paymentIntentArgs = paymentIntentArgsFactory(donee, totalCost, event.paymentMethod.id, user, donationAmount, donationMessage, processingFee)
+                    const { data: paymentIntent } = await createPaymentIntent(paymentIntentArgs)
+    
+                    if (paymentIntent.type === 'StripeInvalidRequestError') {
+                        event.complete('fail')
+                        throw paymentIntent
+                    }
+    
+                    const cardPaymentResult = await stripe.confirmCardPayment(
+                        paymentIntent.client_secret,
+                        { payment_method: event.paymentMethod.id },
+                        { handleActions: false }
+                    )
+    
+                    if (cardPaymentResult.error) {
+                        handlePaymentError(setPaymentResult, cardPaymentResult.error)
+                        event.complete('fail')
+                    } else {
+                        event.complete('success')
+                        setPaymentSuccessful(true)
+                    }
+                } catch (error) {
+                    handlePaymentError(setPaymentResult, error)
+                }
+                setIsLoading(false)
             })
-            .catch(error => {
-                canMakePaymentTrace.putAttribute('result', 'fail')
-                const errorMessage = formatPaymentErrorMessage(error)
-                canMakePaymentTrace.putAttribute('errorMessage', errorMessage.slice(0, MAX_ATTRIBUTE_VALUE_LENGTH))
-            }).finally(() => canMakePaymentTrace.stop())
+        }
 
-        paymentRequest.on('token', ({ token, complete }) => {
-            analytics.logEvent('set_checkout_option', {
-                checkout_option: 'payment_request_button'
-            })
-            chargeWithToken(token, product, user, totalCost, processingFee, setPaymentSuccessful, setPaymentResult, 'paymentRequest')
-                .then(({ successful }) => successful ? complete('success') : complete('fail'))
-        })
+        return () => {
+            if (paymentRequest) {
+                paymentRequest && paymentRequest.removeAllListeners()
+            }
+        }
 
-        setPaymentRequest(paymentRequest)
-    }, [])
+    }, [ donationAmount ])
 
     return (
         <ThemeContext.Consumer>
             {({ theme }) => (canMakePayment && paymentRequest) ? (
                     <>
                         <PaymentRequestButtonElement
-                            paymentRequest={paymentRequest}
+                            options={{paymentRequest}}
                             className="PaymentRequestButton"
-                            style={{
-                                paymentRequestButton: { theme },
-                            }}
+                            style={{ paymentRequestButton: { theme },}}
                         />
                         <p className="payment-request-button-divisor">OR</p>
                     </>

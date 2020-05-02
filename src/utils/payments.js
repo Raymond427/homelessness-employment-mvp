@@ -1,66 +1,80 @@
+import firebase from '../firebase'
 import { capitalize } from '.'
-import { postOrder, performanceMonitor, analytics } from '../firebase'
-import { formatPaymentErrorMessage } from './errorMessages'
+import { performanceMonitor, analytics } from '../firebase'
 
-const FIREBASE_CHARGE_CARD_FUNCTION_URL = ''
-
-const postOrderPayload = (user, product, processingFee, totalCost, chargeId) => ({
-    datePurchased: new Date().getTime(),
-    userId: user.uid,
-    productName: product.name,
-    stripeChargeId: chargeId,
-    charges: {
-        product: product.price,
-        processing: processingFee
+export const paymentIntentArgsFactory = (donee, totalCost, source, user, donationAmount, donationMessage, processingFee) => ({
+    amount: totalCost,
+    currency: 'usd',
+    description: `Donation to ${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
+    metadata: {
+        price: donationAmount,
+        processing_fee: processingFee,
+        firebase_uid: user.uid,
+        donationMessage
     },
-    totalCost
+    payment_method: source,
+    payment_method_types: [ 'card' ],
+    receipt_email: user.email
 })
 
-export const chargeWithToken = (token, product, user, totalCost, processingFee, setPaymentSuccessful, setPaymentResult, method) => {
+export const chargeCard = async (confirmCardPayment, source, { donee, donationAmount, donationMessage, user, totalCost, processingFee, method }) => {
     const chargeTrace = performanceMonitor.trace('charge')
     chargeTrace.start()
     chargeTrace.putAttribute('method', method)
-    fetch(FIREBASE_CHARGE_CARD_FUNCTION_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: chargePayload(user, product, totalCost, processingFee, token)
-    })
-        .then(response => response.json().then(response => {
-                chargeTrace.putAttribute('result', 'other')
-                chargeTrace.putAttribute('status', 'response.status')
-                if (response.status === 'succeeded') {
-                    chargeTrace.putAttribute('result', 'success')
-                    postOrder(postOrderPayload(user, product, processingFee, totalCost, response.id))
-                    analytics.logEvent('purchase', {
-                        currency: response.currency,
-                        items: [ product.name ],
-                        transaction_id: response.id,
-                        tax: processingFee,
-                        value: product.price
-                    })
-                    setPaymentSuccessful(true)
-                    return { successful: true }
-                } else {
-                    throw (response)
+
+    try {
+        const paymentIntentArgs = paymentIntentArgsFactory(donee, totalCost, source, user, donationAmount, donationMessage, processingFee)
+        const createPaymentIntent = firebase.functions().httpsCallable('createPaymentIntent')
+
+        const { data: paymentIntent } = await createPaymentIntent(paymentIntentArgs)
+
+        analytics.logEvent('purchase', {
+            currency: paymentIntent.currency,
+            items: [
+                {
+                    id: donee.id,
+                    name: `${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
+                    quantity: 1,
+                    price: donationAmount
                 }
-            })
-        )
-        .catch(error => {
-            chargeTrace.putAttribute('result', 'fail')
-            setPaymentResult(formatPaymentErrorMessage(error))
-            return { successful: false }
+            ],
+            transaction_id: paymentIntent.id,
+            tax: processingFee,
+            value: donationAmount
         })
-        .finally(() => chargeTrace.stop())
+
+        chargeTrace.putAttribute('result', 'success')    
+        chargeTrace.putAttribute('status', paymentIntent.status)
+
+        const confirmCardPaymentResult = await confirmCardPayment(paymentIntent.client_secret, {
+            payment_method: source,
+            receipt_email: user.email
+        })
+
+        chargeTrace.stop()
+
+        return confirmCardPaymentResult
+    } catch (error) {
+        chargeTrace.putAttribute('result', 'fail')
+        chargeTrace.stop()
+        return error
+    }
 }
 
-export const chargePayload = (user, product, totalCost, processingFee, token) => JSON.stringify({
-    amount: totalCost,
-    currency: 'usd',
-    description: `Work After Work Profit Guide: ${capitalize(product.name)}`,
-    receipt_email: user.email,
-    metadata: {
-        price: product.price,
-        processing_fee: processingFee
-    },
-    source: token.id
-})
+export const isPaymentError = error => (
+    (error instanceof Error) || (error.stack && error.message) || error.error || (typeof error.status === 'string' && error.status.includes('Error'))
+)
+
+export const handlePaymentError = (setPaymentResult, error) => {
+    const genericErrorMessage = "We're having some trouble connecting to the internet, check that your connection is good then try again"
+
+    if (error.error) {
+        setPaymentResult(error.error.message || genericErrorMessage)
+    } else if (error.raw) {
+        setPaymentResult(error.raw.message || genericErrorMessage)
+    } else if (error.type === 'card_error') {
+        setPaymentResult(error.message)
+    } else {
+        setPaymentResult(genericErrorMessage)
+    }
+}

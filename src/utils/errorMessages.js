@@ -22,18 +22,3 @@ export const formatAuthErrorMessage = ({ code, message }) => {
             return message
     }
 }
-
-export const formatPaymentErrorMessage = ({ code, raw }) => {
-    if (!code) {
-        return "We're having some trouble connecting to the internet, check that your connection is good then try again"
-    }
-
-    switch(code) {
-        case 'card_declined':
-            return "The card was declined, please try again or contact your bank"
-        case 'expired_card':
-            return "The card is expired, please try again or contact your bank"
-        default:
-            return raw.message
-    }
-}

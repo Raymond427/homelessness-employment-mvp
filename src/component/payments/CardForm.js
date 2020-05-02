@@ -1,22 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Order from '../Order'
 import Form from '../form'
 import { capitalize, totalPrice, usdFormat, usdFormatToCents } from '../../utils'
-import { PROCESSING_FEE_RATE, THEMES, PATHS } from '../../utils/constants'
-import { chargeWithToken } from '../../utils/payments'
+import { PROCESSING_FEE_RATE, PATHS } from '../../utils/constants'
+import { chargeCard, handlePaymentError, isPaymentError } from '../../utils/payments'
 import { TextField, USDField, RadioField } from '../form/input'
-import { CardElement } from 'react-stripe-elements'
-import { useHistory } from 'react-router-dom'
-import { formatPaymentErrorMessage } from '../../utils/errorMessages'
-import { performanceMonitor, MAX_ATTRIBUTE_VALUE_LENGTH } from '../../firebase'
-import { ThemeContext } from '../provider/ThemeProvider'
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import { performanceMonitor } from '../../firebase'
 import { analytics } from '../../firebase'
 import { NarrowCard } from '../Card'
 import { FeedBackForm } from '../page/Feedback'
 import { Donation } from '../DonationFeed'
 import ShareButton, { shareData } from '../ShareButton'
+import PaymentRequestButton from '../payments/PaymentRequestButton'
 
-const CardForm = ({ user, stripe, donee, PaymentButton }) => {
+const CardForm = ({ user, donee }) => {
+    const stripe = useStripe()
+    const elements = useElements()
+
     const [ paymentSuccessful, setPaymentSuccessful] = useState(false)
     const [ paymentResult, setPaymentResult ] = useState('')
     const [ isLoading, setIsLoading ] = useState(false)
@@ -27,58 +28,103 @@ const CardForm = ({ user, stripe, donee, PaymentButton }) => {
     const [ city, setCity ] = useState('')
     const [ state, setState ] = useState('')
     const [ donationAmount, setDonationAmount ] = useState(0)
-    const [donationMessage, setDonationMessage ] = useState('')
+    const [ donationMessage, setDonationMessage ] = useState('')
     const [ showCustomInput, setShowCustomInput ] = useState(false)
 
-    const history = useHistory()
+    useEffect(() => {
+        if (!stripe) {
+            analytics.logEvent('begin_checkout', {
+                currency: 'usd',
+                items: [ donee.name ],
+                value: donationAmount
+            })
+        }
+    }, [ stripe ])
 
-    const capitalizedDoneeName = capitalize(donee.firstName)
+    if (!stripe || !elements) { return null }
+
+    const capitalizedDoneeName = `${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`
     const processingFee = donationAmount === 0 || isNaN(donationAmount) ? 0 : (donationAmount * PROCESSING_FEE_RATE)
     const charges = [
         { name: capitalizedDoneeName, price: isNaN(donationAmount) ? 0 : donationAmount },
         { name: 'Processing', price: processingFee }
     ]
-    const totalCost = totalPrice(charges)
+    const totalCost = Math.round(totalPrice(charges))
 
-    const cardData = {
-        name,
-        address_line1: streetAddress,
-        address_line2: streetAddress2,
-        address_city: city,
-        address_state: state,
-        address_zip: zipCode,
-        currency: 'usd'
+    const billingDetails = {
+        billing_details: {
+            address: {
+                city,
+                country: 'US',
+                line1: streetAddress,
+                line2: streetAddress2,
+                postal_code: zipCode,
+                state: state
+            },
+            name
+        }
     }
 
-    const processPayment = () => {
+    const chargePayload = {
+        donee,
+        donationAmount,
+        donationMessage,
+        user,
+        totalCost,
+        processingFee,
+        setPaymentSuccessful,
+        setIsLoading,
+        setPaymentResult,
+        method: 'card'
+    }
+
+    const processPayment = async () => {
+        if (!donationAmount || donationAmount === 0) {
+            setPaymentResult('Please enter an amount greater than zero')
+            return
+        }
+
         analytics.logEvent('set_checkout_option', {
             checkout_option: 'card_form'
         })
-        setIsLoading(true)
-        const tokenCreationTrace = performanceMonitor.trace('tokenCreation')
-        tokenCreationTrace.start()
-        stripe.createToken(cardData)
-            .then(({ token }) => {
-                tokenCreationTrace.putAttribute('result', 'success')
-                chargeWithToken(token, donee, user, totalCost, processingFee, setPaymentSuccessful, setPaymentResult, 'card')
-            })
-            .catch(error => {
-                const errorMessage = formatPaymentErrorMessage(error)
-                tokenCreationTrace.putAttribute('result', 'fail')
-                tokenCreationTrace.putAttribute('errorMessage', errorMessage.slice(0, MAX_ATTRIBUTE_VALUE_LENGTH))
-                setPaymentResult(errorMessage)
-            })
-            .finally(() => {
-                tokenCreationTrace.stop()
-                setIsLoading(false)
-            })
-    }
 
-    analytics.logEvent('begin_checkout', {
-        currency: 'usd',
-        items: [ donee.name ],
-        value: donationAmount
-    })
+        setIsLoading(true)
+        
+        const paymentMethodCreationTrace = performanceMonitor.trace('paymentMethodCreation')
+        paymentMethodCreationTrace.start()
+
+        try {
+            const cardElement = elements.getElement(CardElement)
+
+            const { error, paymentMethod } = await stripe.createPaymentMethod({
+                type: 'card',
+                ...billingDetails,
+                card: cardElement
+            })
+
+            if (error) {
+                paymentMethodCreationTrace.putAttribute('result', 'fail')
+                paymentMethodCreationTrace.stop()
+
+                handlePaymentError(setPaymentResult, error)
+            } else {
+                paymentMethodCreationTrace.putAttribute('result', 'success')
+                paymentMethodCreationTrace.stop()
+
+                const chargeResult = await chargeCard(stripe.confirmCardPayment, paymentMethod.id, chargePayload)
+                
+                if (isPaymentError(chargeResult)) {
+                    handlePaymentError(setPaymentResult, chargeResult)
+                } else {
+                    setPaymentSuccessful(true)
+                }
+            }
+        } catch(error) {
+            handlePaymentError(setPaymentResult, error)
+        }
+
+        setIsLoading(false)
+    }
 
     const onQuickSelectClick = value => {
         setShowCustomInput(value === 'Custom Amount')
@@ -96,29 +142,38 @@ const CardForm = ({ user, stripe, donee, PaymentButton }) => {
                             <h4>We’ve sent a reciept to {user.email}</h4>
                             <Order productName={capitalizedDoneeName} charges={charges} />
                             <h4>Here's how your donation will appear on {donee.firstName}'s campaign</h4>
-                            <Donation name="Test User" amountDonated={500} message="Good luck!" />
+                            <Donation name={user.displayName} amountDonated={donationAmount} message={donationMessage} />
                             <h4>One last thing!</h4>
                             <p>We’re planning on expanding this service! Let us know what you think!</p>
-                            <FeedBackForm user={{ email: 'foo@example.com', uid: 12132 }} setPosted={false} />
+                            <FeedBackForm user={user} setPosted={false} />
                         </NarrowCard>
                     :   <NarrowCard title={`Donate to ${capitalizedDoneeName}`}>
                             <Form onSubmit={processPayment} submitting={isLoading} submitValue={'Donate!'} submittingValue={'Processing...'} errorMessage={paymentResult} >
                                 <RadioField labelText="Enter your donation amount" id="donation-quick-select" name="donation-quick-select" valueHook={onQuickSelectClick} options={[500, 1000, 2000, 'Custom Amount'].map(value => ({ value, text: isNaN(value) ? value : usdFormat(value) }))} />
                                 {showCustomInput && <USDField id="donation-custom-amount" name="donation-custom-amount" valueHook={value => setDonationAmount(usdFormatToCents(value))} placeholder="or, you can enter a custom amount here" />}
-                                <TextField id="donation-message" placeholder={`You can leave a message for ${donee.firstName} here!`} valueHook={setDonationMessage} />
+                                <TextField id="donation-message" type="textarea" placeholder={`You can leave a message for ${donee.firstName} here!`} valueHook={setDonationMessage} />
                                 <Order backgroundColor="#6247AA" productName={capitalizedDoneeName} charges={charges} />
-                                <PaymentButton stripe={stripe} user={user} product={donee} totalCost={totalCost} setPaymentResult={setPaymentResult} setPaymentSuccessful={setPaymentSuccessful} processingFee={processingFee} />
+                                <PaymentRequestButton stripe={stripe} {...chargePayload} />
                                 <TextField id='name' required errorMessage='Please provide your name as it appears on your card' placeholder='Name' valueHook={setName} />
                                 <TextField id='street-address-1' required errorMessage='Please provide a valid street address' placeholder='Street Address' valueHook={setStreetAddress} />
                                 <TextField id='street-address-2' errorMessage='Please provide a valid street address' placeholder='Street Address 2' valueHook={setStreetAddress2} />
                                 <TextField id='zip-code' required errorMessage='Please provide a valid zip code' placeholder='Zipcode' valueHook={setZipCode} />
                                 <TextField id='city' required errorMessage='Please provide a city' placeholder='City' valueHook={setCity} />
                                 <TextField id='state' required errorMessage='Please provide a state' placeholder='State' valueHook={setState} />
-                                <ThemeContext.Consumer>
-                                    {({ theme }) => (
-                                        <CardElement style={{base: { fontSize: '14px', color: '#E2CFEA', "::placeholder": { color: '#E2CFEA' } }}} />
-                                    )}
-                                </ThemeContext.Consumer>
+                                <CardElement
+                                     options={{
+                                        style: {
+                                          base: {
+                                            fontSize: '14px',
+                                            color: '#E2CFEA',
+                                            '::placeholder': { color: 'rgba(226, 207, 234, 0.7)' }
+                                          },
+                                          invalid: {
+                                            color: '#9e2146',
+                                          }
+                                        }
+                                      }}
+                                />
                             </Form>
                         </NarrowCard>
                 }
