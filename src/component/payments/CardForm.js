@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Order from '../Order'
 import Form from '../form'
 import { capitalize, totalPrice, usdFormat, usdFormatToCents } from '../../utils'
-import { PROCESSING_FEE_RATE, PATHS } from '../../utils/constants'
-import { chargeCard, handlePaymentError, isPaymentError } from '../../utils/payments'
+import { PATHS } from '../../utils/constants'
+import { chargeCard, handlePaymentError, isPaymentError, calculateProcessingFee } from '../../utils/payments'
 import { TextField, USDField, RadioField } from '../form/input'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { performanceMonitor } from '../../firebase'
@@ -44,7 +44,7 @@ const CardForm = ({ user, donee }) => {
     if (!stripe || !elements) { return null }
 
     const capitalizedDoneeName = `${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`
-    const processingFee = donationAmount === 0 || isNaN(donationAmount) ? 0 : (donationAmount * PROCESSING_FEE_RATE)
+    const processingFee = !donationAmount || donationAmount === 0 || isNaN(donationAmount) ? 0 : calculateProcessingFee(donationAmount)
     const charges = [
         { name: capitalizedDoneeName, price: isNaN(donationAmount) ? 0 : donationAmount },
         { name: 'Processing', price: processingFee }

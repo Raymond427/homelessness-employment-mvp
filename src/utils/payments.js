@@ -2,6 +2,12 @@ import firebase from '../firebase'
 import { capitalize } from '.'
 import { performanceMonitor, analytics } from '../firebase'
 
+const MARGIN = 0.10
+
+const stripeProcessingFee = amount => (amount * 0.029) + 30
+
+export const calculateProcessingFee = amount => stripeProcessingFee(amount) + (amount * MARGIN)
+
 export const paymentIntentArgsFactory = (donee, totalCost, source, user, donationAmount, donationMessage, processingFee) => ({
     amount: totalCost,
     currency: 'usd',

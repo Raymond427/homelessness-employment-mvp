@@ -39,8 +39,6 @@ export const NOTIFICATION_PERMISSION_STATUS = {
     DEFAULT: 'default'
 }
 
-export const PROCESSING_FEE_RATE = 0.3
-
 export const DIALOG = {
     IOS_INSTALL: 'ios-install',
     ANDROID_INSTALL: 'android-install',
