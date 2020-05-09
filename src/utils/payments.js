@@ -35,12 +35,12 @@ export const chargeCard = async (confirmCardPayment, source, { donee, donationAm
                     id: donee.id,
                     name: `${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
                     quantity: 1,
-                    price: donationAmount
+                    price: donationAmount / 100
                 }
             ],
             transaction_id: paymentIntent.id,
-            tax: processingFee,
-            value: donationAmount
+            tax: processingFee / 100,
+            value: donationAmount / 100
         })
 
         chargeTrace.putAttribute('result', 'success')    

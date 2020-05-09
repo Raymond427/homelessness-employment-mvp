@@ -63,6 +63,10 @@ const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, 
 
         if (paymentRequest) {
             paymentRequest.on('paymentmethod', async event => {
+                analytics.logEvent('set_checkout_option', {
+                    checkout_option: 'payment_request_button'
+                })
+
                 if (donationAmount === 0) {
                     setPaymentResult('Please enter an amount greater than zero')
                     return
@@ -90,6 +94,21 @@ const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, 
                         handlePaymentError(setPaymentResult, cardPaymentResult.error)
                         event.complete('fail')
                     } else {
+                        analytics.logEvent('purchase', {
+                            currency: paymentIntent.currency,
+                            items: [
+                                {
+                                    id: donee.id,
+                                    name: `${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
+                                    quantity: 1,
+                                    price: donationAmount / 100
+                                }
+                            ],
+                            transaction_id: paymentIntent.id,
+                            tax: processingFee / 100,
+                            value: donationAmount / 100
+                        })
+
                         event.complete('success')
                         setPaymentSuccessful(true)
                     }
