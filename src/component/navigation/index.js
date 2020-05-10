@@ -31,21 +31,18 @@ export default withRouter(({ hideLogo = false, hideBack = false, showThemeToggle
             <UserContext.Consumer>
                 {({ user }) =>
                     <nav className="nav">
-                        {!hideBack &&
-                            <button className="back-button" onClick={() => history.goBack()}>
-                                <Arrow left />
-                            </button>}
-                        <Link to={PATHS.ABOUT_US} style={{
-                                left: hideBack ? '1rem' : '5rem',
-                                width: 'fit-content',
-                                position: 'absolute',
-                                top: '0.75rem',
-                                fontWeight: 'lighter',
-                                fontSize: '1.2rem',
-                                color: onHomePage ? '#FFFFFF' : 'var(--primary-background-color)'
-                        }}>About Us</Link>
+                        <div className="nav-left-content">
+                            {!hideBack &&
+                                <button className="back-button" onClick={() => history.goBack()}>
+                                    <Arrow left />
+                                </button>}
+                            <Link to={PATHS.ABOUT_US} className="nav-link" style={{
+                                    left: hideBack ? '1rem' : '5rem',
+                                    color: onHomePage ? '#FFFFFF' : 'var(--primary-background-color)'
+                            }}>About Us</Link>
+                        </div>
                         {!online && <OfflineLabel history={history} hideBack={hideBack} />}
-                        {!hideLogo &&
+                        {!hideLogo && !onHomePage &&
                             <button className="nav-home-button" onClick={() => history.push(PATHS.HOME)}>
                                 <MiniLogo />
                             </button>}

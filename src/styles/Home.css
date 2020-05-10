@@ -20,6 +20,10 @@
     margin-top: 15rem;
 }
 
+.home-sub-header {
+    margin: 0 auto 2rem 0;
+}
+
 .home-header h1 {
     font-size: 4rem;
 }
@@ -28,7 +32,25 @@
     width: 30rem;
 }
 
+.main-logo {
+    width: 25rem;
+    margin-bottom: 2rem;
+}
+
 @media (max-width: 940px) {
+    .home-header p {
+        width: 20rem;
+    }
+
+    .home-sub-header {
+        margin: 0px auto 2rem auto;
+    }
+    
+    .main-logo {
+        width: 15rem;
+        margin-bottom: 2rem;
+    }
+
     .home-header {
         text-align: center;
         margin: 0 auto;
@@ -39,10 +61,6 @@
     
     .home-header h1 {
         font-size: 2rem;
-    }
-    
-    .home-header p {
-        width: auto;
     }
 
     .home-background {

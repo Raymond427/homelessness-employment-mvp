@@ -10,12 +10,12 @@
 .nav-home-button {
     cursor: pointer;
     position: absolute;
-    width: 5rem;
+    width: 9rem;
     height: 3.5rem;
     background: none;
     border: none;
     top: -0.2rem;
-    left: calc(50% - 2rem);
+    left: calc(50% - 4.5rem);
 }
 
 .MiniLogo {
@@ -53,6 +53,14 @@
     right: 1rem;
     width: 3.3rem;
     color: var(--primary-background-color);
+}
+
+.nav-link {
+    width: fit-content;
+    position: absolute;
+    font-weight: lighter;
+    font-size: 1.2rem;
+    top: 0.75rem;
 }
 
 .theme-toggle-button {
