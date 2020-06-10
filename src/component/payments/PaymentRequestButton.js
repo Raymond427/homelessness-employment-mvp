@@ -76,7 +76,7 @@ const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, 
 
                 try {
                     const createPaymentIntent = firebase.functions().httpsCallable('createPaymentIntent')
-                    const paymentIntentArgs = paymentIntentArgsFactory(donee, totalCost, event.paymentMethod.id, user, donationAmount, donationMessage, processingFee)
+                    const paymentIntentArgs = paymentIntentArgsFactory(donee, totalCost, event.paymentMethod.id, { ...user, email: event.payerEmail }, donationAmount, donationMessage, processingFee)
                     const { data: paymentIntent } = await createPaymentIntent(paymentIntentArgs)
     
                     if (paymentIntent.type === 'StripeInvalidRequestError') {
@@ -119,11 +119,7 @@ const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, 
             })
         }
 
-        return () => {
-            if (paymentRequest) {
-                paymentRequest && paymentRequest.removeAllListeners()
-            }
-        }
+        return () => paymentRequest && paymentRequest.removeAllListeners()
 
     }, [ donationAmount ])
 

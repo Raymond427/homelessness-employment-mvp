@@ -8,15 +8,15 @@ import Page from '.'
 
 const Account = ({ user }) => (
     <Page pageClassName="Account">
-        <NarrowCard title="Account">
+        <NarrowCard title={user.isAnonymous ? "Guest Account" : "Account"}>
             <ul className="account-links">
                 {user && user && <li>{user.email}</li>}
                 <li id="account-link-log-out" onClick={() => auth.signOut()}>
                     Log Out
                 </li>
-                <li>
+                {!user.isAnonymous && <li>
                     <Link to={PATHS.DONATIONS}>Donations</Link>
-                </li>
+                </li>}
                 <li>
                     <a href="#" target="_blank" rel="noopener noreferrer">
                         Contact Us

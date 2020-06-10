@@ -66,6 +66,8 @@ export const signInWithFacebook = () => {
     return auth.signInWithPopup(facebookProvider).then(({ user }) => ({ user: { ...user } }))
 }
 
+export const guestSignIn = () => auth.signInAnonymously().then(({ user }) => ({ user: { ...user } }))
+
 export const signUp = (email, password) => auth.createUserWithEmailAndPassword(email, password)
 export const signIn = (email, password) => auth.signInWithEmailAndPassword(email, password)
 

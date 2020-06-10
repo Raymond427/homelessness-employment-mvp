@@ -4,7 +4,7 @@ import Form from '../form'
 import { capitalize, totalPrice, usdFormat, usdFormatToCents } from '../../utils'
 import { PATHS } from '../../utils/constants'
 import { chargeCard, handlePaymentError, isPaymentError, calculateProcessingFee } from '../../utils/payments'
-import { TextField, USDField, RadioField } from '../form/input'
+import { TextField, USDField, RadioField, EmailField } from '../form/input'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { performanceMonitor } from '../../firebase'
 import { analytics } from '../../firebase'
@@ -22,6 +22,7 @@ const CardForm = ({ user, donee }) => {
     const [ paymentResult, setPaymentResult ] = useState('')
     const [ isLoading, setIsLoading ] = useState(false)
     const [ name, setName ] = useState('')
+    const [ email, setEmail ] = useState(user.isAnonymous ? '' : user.email)
     const [ streetAddress, setStreetAddress ] = useState('')
     const [ streetAddress2, setStreetAddress2 ] = useState('')
     const [ zipCode, setZipCode ] = useState('')
@@ -69,7 +70,7 @@ const CardForm = ({ user, donee }) => {
         donee,
         donationAmount,
         donationMessage,
-        user,
+        user: { ...user, email },
         totalCost,
         processingFee,
         setPaymentSuccessful,
@@ -139,10 +140,10 @@ const CardForm = ({ user, donee }) => {
                             <img className="completed-donation-img" src={require(`../../img/employment-headshot-mvp.jpg`)} alt={`${donee.firstName} ${donee.lastName}`} />
                             <p>{donee.thankYouMessage}</p>
                             <ShareButton theme={'icon'} shareData={shareData(`${PATHS.PROFILE}/${donee.id}`)} />
-                            <h4>We’ve sent a reciept to {user.email}</h4>
+                            <h4>{email && email.length > 0 ? `We’ve sent a reciept to ${email}` : "We’ve sent a reciept to your email address"}</h4>
                             <Order productName={capitalizedDoneeName} charges={charges} />
                             <h4>Here's how your donation will appear on {donee.firstName}'s campaign</h4>
-                            <Donation name={user.displayName} amountDonated={donationAmount} message={donationMessage} />
+                            <Donation name={user.isAnonymous ? 'You' : user.displayName} amountDonated={donationAmount} message={donationMessage} />
                             <h4>One last thing!</h4>
                             <p>We’re planning on expanding this service! Let us know what you think!</p>
                             <FeedBackForm user={user} setPosted={false} />
@@ -155,6 +156,7 @@ const CardForm = ({ user, donee }) => {
                                 <Order backgroundColor="#6247AA" productName={capitalizedDoneeName} charges={charges} />
                                 <PaymentRequestButton stripe={stripe} {...chargePayload} />
                                 <TextField id='name' required errorMessage='Please provide your name as it appears on your card' placeholder='Name' valueHook={setName} />
+                                {user.isAnonymous && <EmailField valueHook={setEmail} />}
                                 <TextField id='street-address-1' required errorMessage='Please provide a valid street address' placeholder='Street Address' valueHook={setStreetAddress} />
                                 <TextField id='street-address-2' errorMessage='Please provide a valid street address' placeholder='Street Address 2' valueHook={setStreetAddress2} />
                                 <TextField id='zip-code' required errorMessage='Please provide a valid zip code' placeholder='Zipcode' valueHook={setZipCode} />

@@ -9,8 +9,9 @@ const stripe = new Stripe(functions.config().stripe.secret)
 
 exports.createStripeCustomer = functions.auth.user().onCreate(
     async ({ uid, email, displayName, metadata: { creationTime } }, context) => {
+
         const firebaseuid = uid
-        const customer = await stripe.customers.create({ email, name: displayName, metadata: { firebaseuid } })
+        const customer = email ? await stripe.customers.create({ email, name: displayName, metadata: { firebaseuid } }) : { id: null }
 
         return db.doc(`users/${firebaseuid}`).create({ email, creationTime, stripeid: customer.id })
     }
@@ -20,9 +21,9 @@ exports.createPaymentIntent = functions.https.onCall(
     async (paymentIntentArgs, context) => {
         const firebaseuid = context.auth.uid
         const user = await db.doc(`users/${firebaseuid}`).get()
-        const userStripeCustomerId = user ? user.data().stripeid : null
+        const userStripeCustomerId = user.data() ? user.data().stripeid : null
         try {
-            return await stripe.paymentIntents.create({ ...paymentIntentArgs, customer: userStripeCustomerId })
+            return await stripe.paymentIntents.create(user && user.email && userStripeCustomerId ? { ...paymentIntentArgs, customer: userStripeCustomerId } : paymentIntentArgs)
         } catch (error) {
             return error
         }

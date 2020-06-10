@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
-import { signInWithGoogle, signIn, signUp, signInWithFacebook, performanceMonitor, MAX_ATTRIBUTE_VALUE_LENGTH, analytics } from '../../firebase'
+import { signInWithGoogle, signIn, signUp, signInWithFacebook, performanceMonitor, MAX_ATTRIBUTE_VALUE_LENGTH, analytics, guestSignIn } from '../../firebase'
 import Form from '../form'
 import '../../styles/Login.css'
 import { EmailField, PasswordField } from '../form/input'
@@ -14,8 +14,9 @@ import { DialogConsumer } from '../dialog'
 import { InstallPromptConsumer } from '../provider/InstallPromptProvider'
 import { NOTIFICATION_PERMISSION_STATUS } from '../../utils/constants'
 import Page from '.'
+import Button from '../Button'
 
-const SignInAndSignUp = ({ newUser, showDialog, addToHomeScreen }) => {
+const SignInAndSignUp = ({ newUser, donateOnSignIn, showDialog, addToHomeScreen }) => {
     const [ authErrorMessage, setAuthErrorMessage ] = useState('')
     const [ isLoading, setIsLoading ] = useState(false)
     const [ email, setEmail ] = useState('')
@@ -71,6 +72,7 @@ const SignInAndSignUp = ({ newUser, showDialog, addToHomeScreen }) => {
     return (
         <Page pageClassName="Login">
             <NarrowCard title={newUser? 'Sign Up' : 'Sign In'}>
+                {donateOnSignIn && <h4 style={{ width: '17rem', margin: '0 auto' }}>It's easier to find and manage your donations if create an account</h4>}
                 <SocialAuthButton name="google" onClick={() => handleAuth(signInWithGoogle, 'google')} newUser={newUser} />
                 {/* <SocialAuthButton name="facebook" onClick={() => handleAuth(signInWithFacebook, 'facebook')} newUser={newUser} /> */}
                 <Form
@@ -83,6 +85,7 @@ const SignInAndSignUp = ({ newUser, showDialog, addToHomeScreen }) => {
                     <EmailField valueHook={setEmail} />
                     <PasswordField valueHook={setPassword} />
                 </Form>
+                {donateOnSignIn && <Button secondary onClick={guestSignIn}>Continue as a Guest</Button>}
                 <p className='login-links'>
                     {newUser
                         ? <span>Already have an account? <Link to={{pathname: PATHS.LOGIN, state: { newUser: false }}}>Sign In</Link></span>
@@ -99,6 +102,7 @@ const SignInAndSignUp = ({ newUser, showDialog, addToHomeScreen }) => {
 const Login = ({ user }) => {
     const location = useLocation()
     const pathOnSignIn = (location.state && location.state.pathOnSignIn) ? location.state.pathOnSignIn : PATHS.HOME
+    const donateOnSignIn = /\/donate\/\d+/.test(pathOnSignIn)
 
     return user
         ? <Redirect to={pathOnSignIn} />
@@ -111,6 +115,7 @@ const Login = ({ user }) => {
                                 newUser={location.state ? location.state.newUser : location.pathname === PATHS.SIGN_UP}
                                 showDialog={showDialog}
                                 addToHomeScreen={addToHomeScreen}
+                                donateOnSignIn={donateOnSignIn}
                             />
                         )}
                     </InstallPromptConsumer>
