@@ -1,3 +1,9 @@
+.home-content {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 0 3rem;
+}
+
 .home-background {
     background-color: var(--primary-color);
     width: 100%;
@@ -10,18 +16,21 @@
 }
 
 .home-content--wrapper {
-    max-width: 70rem;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .home-header {
     text-align: left;
-    margin-left: 3rem;
-    margin-top: 15rem;
+    margin-bottom: 12rem;
 }
 
 .home-sub-header {
-    margin: 0 auto 2rem 0;
+    margin: 0 auto 0.5rem 0;
+    font-size: 1.5rem;
 }
 
 .home-header h1 {
@@ -37,7 +46,76 @@
     margin-bottom: 2rem;
 }
 
+.home-description-wrapper {
+    margin-top: 5rem;
+}
+
+.home-description {
+    color: var(--secondary-text-color);
+    font-weight: normal;
+    font-size: 1rem;
+    max-width: 45rem;
+    text-align: left;
+}
+
+.home-strong-line {
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.how-it-works-wrapper {
+    max-width: 60rem;
+    margin: 0 auto;
+}
+
+.how-it-works {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: space-between;
+    color: var(--secondary-text-color);
+}
+
+.how-it-works img {
+    width: 20rem;
+    padding: 0 1rem;
+    height: auto;
+}
+
+.how-it-works h3 {
+    color: var(--primary-color);
+    padding: 0;
+}
+
+.how-it-works-description {
+    max-width: 25rem;
+}
+
+@media (max-width: 730px) {
+    .how-it-works {
+        margin: 5rem 0;
+        flex-direction: column;
+    }
+
+    .how-it-works-2 {
+        flex-direction: column-reverse;
+    }
+}
+
 @media (max-width: 940px) {
+    .home-how-it-works {
+        text-align: center;
+    }
+
+    .home-background {
+        height: 30rem;
+    }
+
+    .home-content--wrapper {
+        flex-direction: column;
+    }
+
     .home-header p {
         width: 20rem;
     }
@@ -61,11 +139,5 @@
     
     .home-header h1 {
         font-size: 2rem;
-    }
-
-    .home-background {
-        min-height: 100vh;
-        height: 59rem;
-        clip-path: unset;
     }
 }

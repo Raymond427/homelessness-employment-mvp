@@ -1,8 +1,4 @@
 .DoneeThumbnail {
-    float: right;
-    position: relative;
-    right: 3rem;
-    top: -25rem;
     font-size: 0.8rem;
 }
 
@@ -19,12 +15,11 @@
 
 .donee-thumbnail__desc {
     margin: 0.3rem 0;
+    font-size: 0.9rem;
 }
 
 @media (max-width: 940px) {
     .DoneeThumbnail {
-        float: unset;
-        position: static;
-        right: unset;
+        margin-right: 0;
     }
 }

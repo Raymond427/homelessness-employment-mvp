@@ -1,0 +1,6 @@
+.footer {
+    width: 100%;
+    margin-top: 5rem;
+    background-color: var(--footer-background-color);
+    padding: 1rem 0;
+}

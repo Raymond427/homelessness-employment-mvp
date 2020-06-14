@@ -72,7 +72,7 @@ const SignInAndSignUp = ({ newUser, donateOnSignIn, showDialog, addToHomeScreen 
     return (
         <Page pageClassName="Login">
             <NarrowCard title={newUser? 'Sign Up' : 'Sign In'}>
-                {donateOnSignIn && <h4 style={{ width: '17rem', margin: '0 auto' }}>It's easier to find and manage your donations if create an account</h4>}
+                {donateOnSignIn && <h4 style={{ width: '17rem', margin: '0 auto', fontWeight: 'normal' }}>It's easier to find and manage your donations if create an account</h4>}
                 <SocialAuthButton name="google" onClick={() => handleAuth(signInWithGoogle, 'google')} newUser={newUser} />
                 {/* <SocialAuthButton name="facebook" onClick={() => handleAuth(signInWithFacebook, 'facebook')} newUser={newUser} /> */}
                 <Form

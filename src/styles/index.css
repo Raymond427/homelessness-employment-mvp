@@ -9,6 +9,7 @@ html {
     --secondary-text-color: #102B3F;
     --primary-placeholder-color: rgba(226, 207, 234, 0.7);
     --tertiary-color: #CF6679;
+    --footer-background-color: #202124;
 }
 
 @media (max-width: 768px) {
