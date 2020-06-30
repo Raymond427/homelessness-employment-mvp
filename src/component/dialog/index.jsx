@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React, { useState, useEffect, createRef, useContext } from 'react'
 import dialogPolyfill from 'dialog-polyfill'
 import '../../styles/Dialog.css'
 import { DIALOG, NOTIFICATION_PERMISSION_STATUS } from '../../utils/constants'
@@ -7,10 +7,11 @@ import AndroidInstallDialog from './AndroidInstallDialog'
 import NotificationDialog from './NotificationDialog'
 import UpdateDialog from './UpdateDialog'
 import ShareDialog from './ShareDialog'
+import { InstallPromptContext } from '../provider/InstallPromptProvider'
 import X from '../icon/X'
 import notificationsSupported from '../../firebase'
 
-export const { Provider, Consumer: DialogConsumer } = React.createContext()
+export const DialogContext = React.createContext()
 
 const DialogContent = ({ type, addToHomeScreen, onClose, dialogProps }) => {
     switch (type) {
@@ -28,11 +29,12 @@ const DialogContent = ({ type, addToHomeScreen, onClose, dialogProps }) => {
     }
 }
 
-const Dialog = ({ addToHomeScreen, children }) => {
+const Dialog = ({ children }) => {
     const [ showing, setShowing ] = useState(false)
     const [ type, setType ] = useState('')
     const [ dialogProps, setDialogProps ] = useState(null)
     const dialogRef = createRef()
+    const { addToHomeScreen } = useContext(InstallPromptContext)
 
     const closeDialog = () => {
         if (dialogRef.current) {
@@ -60,7 +62,7 @@ const Dialog = ({ addToHomeScreen, children }) => {
     }
 
     const closeIfEscapeKeyIsPressed = e => {
-        if(e.keyCode === 27) {
+        if(e.keyCode === 27) {  // if ESC key is pressed
             onClose()
         }
     }
@@ -88,7 +90,7 @@ const Dialog = ({ addToHomeScreen, children }) => {
     }, [ showing ])
 
     return (
-        <Provider value={{ showDialog }}>
+        <DialogContext.Provider value={{ showDialog }}>
             {showing && (
                 <dialog ref={dialogRef}>
                     <button className="dialog-close-button" onClick={onClose}><X /></button>
@@ -96,7 +98,7 @@ const Dialog = ({ addToHomeScreen, children }) => {
                 </dialog>
             )}
             {children}
-        </Provider>
+        </DialogContext.Provider>
     )
 }
 

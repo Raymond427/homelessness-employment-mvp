@@ -29,7 +29,7 @@ ErrorMessage.propTypes = {
     errorMessage: PropTypes.string.isRequired
 }
 
-const Field = ({ id, type, labelText, required, errorMessage, input, addToInValidFields, removeFromInValidFields, submissionAttempted, ...props }) => {
+const Field = ({ id, type, labelText, required, errorMessage, Input, addToInValidFields, removeFromInValidFields, submissionAttempted, ...props }) => {
     const [ valid, setValidity ] = useState(true)
     const [ touched, setTouched ] = useState(false)
 
@@ -50,8 +50,6 @@ const Field = ({ id, type, labelText, required, errorMessage, input, addToInVali
         valid ? onValid() : onInValid()
     }
 
-    const Input = input
-
     return (
         <div className='field' id={`${id}-field`}>
             {labelText && <Label htmlFor={id} labelText={labelText} required={required} />}
@@ -67,26 +65,26 @@ Field.propTypes = {
     labelText: PropTypes.string,
     required: PropTypes.bool,
     errorMessage: PropTypes.string,
-    input: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
+    Input: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
 }
 
 export const TextField = ({ type = 'text', ...props }) => (
-    <Field type={type} input={TextInput} {...props} />
+    <Field type={type} Input={TextInput} {...props} />
 )
 
 export const USDField = props => (
-    <Field input={MoneyInput} {...props} />
+    <Field Input={MoneyInput} {...props} />
 )
 
 export const TextAreaField = props => (
-    <Field type='textarea' input={TextInput} {...props} />
+    <Field type='textarea' Input={TextInput} {...props} />
 )
 
 export const EmailField = props => (
     <Field
         type='email'
         id='email'
-        input={TextInput}
+        Input={TextInput}
         placeholder='Email'
         pattern={/^([a-zA-Z0-9_\-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/}
         errorMessage='Please enter a valid email address'
@@ -99,7 +97,7 @@ export const PasswordField = props => (
     <Field
         type='password'
         id='password'
-        input={TextInput}
+        Input={TextInput}
         placeholder='Password'
         pattern={/^(?=[^\d_].*?\d)\w(\w|[!@#$%]){7,20}/}
         errorMessage='Password must be between 4 and 8 digits long and include at least one numeric digit'
@@ -109,17 +107,17 @@ export const PasswordField = props => (
 )
 
 export const SelectField = props => (
-    <Field input={SelectInput} {...props} />
+    <Field Input={SelectInput} {...props} />
 )
 
 export const CheckboxField = props => (
-    <Field input={Checkboxes} {...props} />
+    <Field Input={Checkboxes} {...props} />
 )
 
 export const RadioField = props => (
-    <Field input={RadioInput} {...props} />
+    <Field Input={RadioInput} {...props} />
 )
 
 export const RatingField = props => (
-    <Field input={RatingInput} {...props} />
+    <Field Input={RatingInput} {...props} />
 )

@@ -17,7 +17,7 @@ const DonateRoute = ({ condition = true, Component, redirectOnRestricted = PATHS
 
     return condition
         ? <Component donee={donee} user={user} {...rest} />
-        : <Redirect to={{ pathname: PATHS.LOGIN, state: { pathOnSignIn: `${PATHS.DONATE}/${doneeId}` }}} />
+        : <Redirect to={{ pathname: PATHS.SIGN_UP, state: { newUser: true, pathOnSignIn: `${PATHS.DONATE}/${doneeId}` }}} />
 }
 
 export default DonateRoute

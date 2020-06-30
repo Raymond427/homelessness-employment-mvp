@@ -18,13 +18,10 @@ const Account = ({ user }) => (
                     <Link to={PATHS.DONATIONS}>Donations</Link>
                 </li>}
                 <li>
-                    <a href="#" target="_blank" rel="noopener noreferrer">
+                    <a href={PATHS.EMAIL} target="_blank" rel="noopener noreferrer">
                         Contact Us
                     </a>
                 </li>
-                {/* <li>
-                    <Link to={PATHS.FEEDBACK}>Give Feedback</Link>
-                </li> */}
             </ul>
         </NarrowCard>
     </Page>

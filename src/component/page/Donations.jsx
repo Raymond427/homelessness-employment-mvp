@@ -9,7 +9,7 @@ const Donations = () => (
     <Page pageClassName="Donations">
         <NarrowCard title="Donations">
             <p>Have a question about a donation?</p>
-            <a href={PATHS.EMAIL_US} target="_blank" rel="noopener noreferrer">
+            <a href={PATHS.EMAIL} target="_blank" rel="noopener noreferrer">
                 Contact Us
             </a>
             <div className="orders">

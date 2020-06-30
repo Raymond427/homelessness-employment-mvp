@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Button from './Button'
-import { DialogConsumer } from './dialog'
+import { DialogContext } from './dialog'
 import { DIALOG, FULL_URL } from '../utils/constants'
 import Share from './icon/Share'
 import '../styles/ShareButton.css'
@@ -27,14 +27,11 @@ export const shareData = path => ({
 })
 
 const ShareButton = ({ theme = 'icon', shareData }) => {
+    const { showDialog } = useContext(DialogContext)
     return (
-        <DialogConsumer>
-            {({ showDialog }) => (
-                theme === 'icon'
-                    ? <div className="ShareIconLink" onClick={() => shareContent(showDialog, shareData)}><Share /> Share this campaign</div>
-                    : <Button onClick={() => shareContent(showDialog, shareData)}>Share!</Button>
-            )}
-        </DialogConsumer>
+        theme === 'icon'
+            ? <div className="ShareIconLink" onClick={() => shareContent(showDialog, shareData)}><Share /> Share this campaign</div>
+            : <Button onClick={() => shareContent(showDialog, shareData)}>Share!</Button>
     )
 }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import '../styles/Order.css'
-import { NarrowCard } from '../component/Card'
+import { NarrowCard } from './Card'
 import { usdFormat, totalPrice, formatDate, capitalize } from '../utils'
 
 const Order = ({ id, doneeName, dateCreated, charges, backgroundColor }) => (

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { donationSubscription } from '../../firebase'
 
-export const { Provider, Consumer } = React.createContext()
-export const OrderConsumer = Consumer
+export const OrderContext = React.createContext()
+export const OrderConsumer = OrderContext.Consumer
 
 export default ({ user, children }) => {
     const [ orders, setOrders ] = useState([])
@@ -24,8 +24,8 @@ export default ({ user, children }) => {
     }, [ user ])
     
     return (
-        <Provider value={{ orders }}>
+        <OrderContext.Provider value={{ orders }}>
             {children}
-        </Provider>       
+        </OrderContext.Provider>       
     )
 }

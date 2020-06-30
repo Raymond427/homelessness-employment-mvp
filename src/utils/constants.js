@@ -1,17 +1,16 @@
-export const COMPANY_EMAIL = 'example@example.com'
+export const COMPANY_EMAIL = 'thepivotfund@gmail.com'
 
 export const PATHS = {
     HOME: '/',
     LOGIN: '/login',
     SIGN_UP: '/sign-up',
-    ABOUT_US: '/about-us',
     USER_MANAGEMENT: '/usermgmt',
     RESET_PASSWORD: '/reset-password',
     ACCOUNT: '/account',
     DONATE: '/donate',
     FEEDBACK: '/feedback',
     DONATIONS: '/donations',
-    EMAIL_US: `mailto:${COMPANY_EMAIL}`,
+    EMAIL: `mailto:${COMPANY_EMAIL}`,
     PROFILE: `/profile`
 }
 

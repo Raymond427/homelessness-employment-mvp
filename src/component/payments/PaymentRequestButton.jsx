@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { PaymentRequestButtonElement } from '@stripe/react-stripe-js'
-import { ThemeContext } from '../provider/ThemeProvider'
 import { capitalize } from '../../utils'
 import { paymentIntentArgsFactory, handlePaymentError } from '../../utils/payments'
 import firebase, { performanceMonitor, analytics } from '../../firebase'
@@ -40,10 +39,10 @@ const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, 
     
             const checkPaymentRequestButtonAvailable = async () => {
                 const paymentRequestButtonAvailable = await paymentRequest.canMakePayment()
+                analytics.logEvent('payment_request_button_available', { available: `${paymentRequestButtonAvailable}` })
     
                 if (paymentRequestButtonAvailable) {
                     canMakePaymentTrace.putAttribute('result', 'success')
-                    analytics.logEvent('payment_request_button_available', { available: `${paymentRequestButtonAvailable}` })
                     setCanMakePayment(paymentRequestButtonAvailable)
                 }
     
@@ -124,19 +123,16 @@ const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, 
     }, [ donationAmount ])
 
     return (
-        <ThemeContext.Consumer>
-            {({ theme }) => (canMakePayment && paymentRequest) ? (
-                    <>
-                        <PaymentRequestButtonElement
-                            options={{paymentRequest}}
-                            className="PaymentRequestButton"
-                            style={{ paymentRequestButton: { theme },}}
-                        />
-                        <p className="payment-request-button-divisor">OR</p>
-                    </>
-                ) : null
-            }
-        </ThemeContext.Consumer>
+            (canMakePayment && paymentRequest) ? (
+                <>
+                    <PaymentRequestButtonElement
+                        options={{paymentRequest}}
+                        className="PaymentRequestButton"
+                        style={{ paymentRequestButton: { theme: 'dark' },}}
+                    />
+                    <p className="payment-request-button-divisor">OR</p>
+                </>
+            ) : null
     )
 }
 

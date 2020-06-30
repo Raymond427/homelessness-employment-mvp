@@ -3,5 +3,5 @@ export const isIOS = () => {
     return /iphone|ipad|ipod/.test( userAgent )
 }
 
-export const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone)
+export const isInStandaloneMode = () => window.navigator.standalone
   

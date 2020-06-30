@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../provider/UserProvider'
 import '../../styles/AuthenticationLinks.css'
@@ -24,15 +24,15 @@ const AccountLink = ({ user: { photoURL }, history, onHomePage }) => {
 
 const AuthenticationLinks = ({ history }) => {
     const onHomePage = history.location.pathname === PATHS.HOME
+    const { user } = useContext(UserContext)
 
     return (
-        <UserContext.Consumer>
-            {({ user }) => (
-                user
-                    ? <AccountLink user={user} history={history} onHomePage={onHomePage} />
-                    : <SignInAndSignUpLinks onHomePage={onHomePage} />
-            )}
-        </UserContext.Consumer>
+        <div>
+            {user
+                ? <AccountLink user={user} history={history} onHomePage={onHomePage} />
+                : <SignInAndSignUpLinks onHomePage={onHomePage} />
+            }
+        </div>
     )
 }
 

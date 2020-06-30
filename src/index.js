@@ -4,7 +4,7 @@ import './styles/index.css'
 import App from './component'
 import { Router } from 'react-router-dom'
 import history from './history'
-import * as serviceWorker from './serviceWorker'
+// import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
     <Router history={history}>

@@ -12,7 +12,7 @@ import { NarrowCard } from '../Card'
 import { FeedBackForm } from '../page/Feedback'
 import { Donation } from '../DonationFeed'
 import ShareButton, { shareData } from '../ShareButton'
-import PaymentRequestButton from '../payments/PaymentRequestButton'
+import PaymentRequestButton from './PaymentRequestButton'
 
 const CardForm = ({ user, donee }) => {
     const stripe = useStripe()

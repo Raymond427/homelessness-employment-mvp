@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 // import { analytics } from '../../firebase'
 
-export const { Provider, Consumer: InstallPromptConsumer } = React.createContext()
+export const InstallPromptContext = React.createContext()
 
 const InstallPromptProvider = ({ children }) => {
     const [ installPrompt, setInstallPrompt ] = useState()
@@ -34,14 +34,17 @@ const InstallPromptProvider = ({ children }) => {
     const addToHomeScreen = () => {
         if (installPrompt) {
             installPrompt.prompt()
-            installPrompt.userChoice.then(/* choiceResult => analytics.logEvent('install_prompt', { accepted: choiceResult.outcome === 'accepted' })*/)
+            installPrompt.userChoice.then(
+                // choiceResult =>
+                //    analytics.logEvent('install_prompt', { accepted: choiceResult.outcome === 'accepted' })
+            )
         }
     }
 
     return (
-        <Provider value={{ addToHomeScreen }}>
+        <InstallPromptContext.Provider value={{ addToHomeScreen }}>
             {children}
-        </Provider>
+        </InstallPromptContext.Provider>
     )
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import donations from '../data/donations.json'
 import { usdFormat } from '../utils'
-import Account from '../component/icon/Account'
+import Account from './icon/Account'
 import '../styles/Donation.css'
 
 export const Donation = ({ name, amountDonated, message }) => (

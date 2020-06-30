@@ -1,5 +1,5 @@
 import React from 'react'
-// import { requestNotificationPermission } from '../../firebase'
+import { requestNotificationPermission } from '../../firebase'
 import { NOTIFICATION_PERMISSION_STATUS } from '../../utils/constants'
 
 const NotificationDialog = ({ onClose }) => (
@@ -11,7 +11,7 @@ const NotificationDialog = ({ onClose }) => (
                 className="dialog-primary-button"
                 onClick={() => {
                     if (Notification.permission === NOTIFICATION_PERMISSION_STATUS.DEFAULT) {
-                        // requestNotificationPermission()
+                        requestNotificationPermission()
                     }
                     onClose()
                 }}

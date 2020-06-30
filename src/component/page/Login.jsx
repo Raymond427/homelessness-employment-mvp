@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { signInWithGoogle, signIn, signUp, signInWithFacebook, performanceMonitor, MAX_ATTRIBUTE_VALUE_LENGTH, analytics, guestSignIn } from '../../firebase'
 import Form from '../form'
@@ -10,9 +10,9 @@ import { useLocation } from 'react-router-dom'
 import { PATHS, DIALOG } from '../../utils/constants'
 import { formatAuthErrorMessage } from '../../utils/errorMessages'
 import { isInStandaloneMode, isIOS } from '../../utils/browser'
-import { DialogConsumer } from '../dialog'
-import { InstallPromptConsumer } from '../provider/InstallPromptProvider'
-import { NOTIFICATION_PERMISSION_STATUS } from '../../utils/constants'
+import { DialogContext } from '../dialog'
+import { InstallPromptContext } from '../provider/InstallPromptProvider'
+// import { NOTIFICATION_PERMISSION_STATUS } from '../../utils/constants'
 import Page from '.'
 import Button from '../Button'
 
@@ -23,7 +23,7 @@ const SignInAndSignUp = ({ newUser, donateOnSignIn, showDialog, addToHomeScreen 
     const [ password, setPassword ] = useState('')
     const authTrace = performanceMonitor.trace('auth')
 
-    const handleUser = (type) => {
+    const handleUser = type => {
         authTrace.putAttribute('result', 'success')
         analytics.logEvent(type === 'emailSignUp' ? 'sign_up' : 'login', {
             method: type
@@ -57,7 +57,7 @@ const SignInAndSignUp = ({ newUser, donateOnSignIn, showDialog, addToHomeScreen 
         authTrace.putAttribute('type', type)
         setIsLoading(true)
         authProvider()
-            .then(user => handleUser(type))
+            .then(() => handleUser(type))
             .catch(handleAuthError)
             .finally(() => authTrace.stop())
     }
@@ -103,24 +103,18 @@ const Login = ({ user }) => {
     const location = useLocation()
     const pathOnSignIn = (location.state && location.state.pathOnSignIn) ? location.state.pathOnSignIn : PATHS.HOME
     const donateOnSignIn = /\/donate\/\d+/.test(pathOnSignIn)
+    const { showDialog } = useContext(DialogContext)
+    const { addToHomeScreen } = useContext(InstallPromptContext)
 
     return user
         ? <Redirect to={pathOnSignIn} />
         : (
-            <DialogConsumer>
-                {({ showDialog }) => (
-                    <InstallPromptConsumer>
-                        {addToHomeScreen => (
-                            <SignInAndSignUp
-                                newUser={location.state ? location.state.newUser : location.pathname === PATHS.SIGN_UP}
-                                showDialog={showDialog}
-                                addToHomeScreen={addToHomeScreen}
-                                donateOnSignIn={donateOnSignIn}
-                            />
-                        )}
-                    </InstallPromptConsumer>
-                )}
-            </DialogConsumer>
+            <SignInAndSignUp
+                newUser={location.state ? location.state.newUser : location.pathname === PATHS.SIGN_UP}
+                showDialog={showDialog}
+                addToHomeScreen={addToHomeScreen}
+                donateOnSignIn={donateOnSignIn}
+            />
         )
 }
 
