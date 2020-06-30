@@ -17,13 +17,12 @@ const AccountLink = ({ user: { photoURL }, history, onHomePage }) => {
 
     return (
         <button className="account-link" onClick={() => history.push(PATHS.ACCOUNT)}>
-            {photoURL && !showDefaultIcon ? <img className='account-icon account-profile' alt='account icon' src={photoURL} onError={() => setShowDefaultIcon(true)} /> : <Account color={onHomePage ? '#FFFFFF' : 'var(--primary-text-color)'} />}
+            {photoURL && !showDefaultIcon ? <img className='account-icon account-profile' alt='account icon' src={photoURL} onError={() => setShowDefaultIcon(true)} /> : <Account color={onHomePage ? '#FFFFFF' : 'var(--secondary-text-color)'} />}
         </button>
     )
 }
 
-const AuthenticationLinks = ({ history }) => {
-    const onHomePage = history.location.pathname === PATHS.HOME
+const AuthenticationLinks = ({ history, onHomePage }) => {
     const { user } = useContext(UserContext)
 
     return (

@@ -10,13 +10,12 @@ import { PATHS } from '../../utils/constants'
 import Offline from '../icon/Offline'
 import { OnlineContext } from '../provider/OnlineProvider'
 
-const OfflineLabel = ({ history, hideBack }) => {
-    const onHomePage = history.location.pathname === PATHS.HOME
-    const color = onHomePage ? '#FFFFFF' : 'var(--primary-text-color)'
+const OfflineLabel = ({ hideBack, onHomePage }) => {
+    const color = onHomePage ? '#FFFFFF' : 'var(--secondary-text-color)'
 
     return (
         <div className="offline-label" style={{ left: hideBack ? '1rem' : '4.5rem' }}>
-            <Offline color={onHomePage ? '#FFFFFF' : 'var(--primary-text-color)'} />
+            <Offline color={onHomePage ? '#FFFFFF' : 'var(--secondary-text-color)'} />
             <span style={{ color }}>Offline</span>
         </div>
     )
@@ -35,13 +34,13 @@ export default withRouter(({ hideLogo = false, hideBack = false, showThemeToggle
                             <Arrow left />
                         </button>}
                 </div>
-                {!online && <OfflineLabel history={history} hideBack={hideBack} />}
+                {!online && <OfflineLabel hideBack={hideBack} onHomePage={onHomePage} />}
                 {!hideLogo && !onHomePage &&
                     <button className="nav-home-button" onClick={() => history.push(PATHS.HOME)}>
                         <MiniLogo />
                     </button>}
                 {user && showThemeToggle && <ThemeToggler />}
-                <AuthenticationLinks history={history} />
+                <AuthenticationLinks history={history} onHomePage={onHomePage} />
             </nav>
     )
 })
