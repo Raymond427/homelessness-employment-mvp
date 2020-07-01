@@ -7,9 +7,9 @@ import { EmailField, PasswordField } from '../form/input'
 import SocialAuthButton from '../authentication/SocialAuthButton'
 import { NarrowCard } from '../Card'
 import { useLocation } from 'react-router-dom'
-import { PATHS, DIALOG } from '../../utils/constants'
+import { PATHS/*, DIALOG */ } from '../../utils/constants'
 import { formatAuthErrorMessage } from '../../utils/errorMessages'
-import { isInStandaloneMode, isIOS } from '../../utils/browser'
+// import { isInStandaloneMode, isIOS } from '../../utils/browser'
 import { DialogContext } from '../dialog'
 import { InstallPromptContext } from '../provider/InstallPromptProvider'
 // import { NOTIFICATION_PERMISSION_STATUS } from '../../utils/constants'
@@ -74,7 +74,7 @@ const SignInAndSignUp = ({ newUser, donateOnSignIn, showDialog, addToHomeScreen 
             <NarrowCard title={newUser? 'Sign Up' : 'Sign In'}>
                 {donateOnSignIn && <h4 style={{ width: '17rem', margin: '0 auto', fontWeight: 'normal' }}>It's easier to find and manage your donations if create an account</h4>}
                 <SocialAuthButton name="google" onClick={() => handleAuth(signInWithGoogle, 'google')} newUser={newUser} />
-                {/* <SocialAuthButton name="facebook" onClick={() => handleAuth(signInWithFacebook, 'facebook')} newUser={newUser} /> */}
+                <SocialAuthButton name="facebook" onClick={() => handleAuth(signInWithFacebook, 'facebook')} newUser={newUser} />
                 <Form
                     onSubmit={genericAuth}
                     submitValue={newUser ? 'Sign Up' : 'Sign In'}
