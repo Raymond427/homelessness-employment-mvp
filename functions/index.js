@@ -23,7 +23,12 @@ exports.createPaymentIntent = functions.https.onCall(
         const userStripeCustomerId = user.data() ? user.data().stripeid : null
         
         try {
-            return await stripe.paymentIntents.create(user && user.email && userStripeCustomerId ? { ...paymentIntentArgs, customer: userStripeCustomerId } : paymentIntentArgs)
+            const paymentIntent = await stripe.paymentIntents.create(user && user.email && userStripeCustomerId ? { ...paymentIntentArgs, customer: userStripeCustomerId } : paymentIntentArgs)
+            if (paymentIntent.status === 'succeeded') {
+                db.collection('/donations').add({ ...data.donationPayload, stripeChargeId: chargeResponse.id })
+            }
+
+            return paymentIntent
         } catch (error) {
             return error
         }
@@ -34,9 +39,8 @@ exports.processPayment = functions.https.onCall(
     async data => {
         try {
             const chargeResponse = await stripe.charges.create({ metadata: { firebaseuid }, ...data.chargePayload })
-        
             if (chargeResponse.status === 'succeeded') {
-                db.collection(`donations`).add({ ...data.donationPayload, stripeChargeId: chargeResponse.id })
+                db.collection('/donations').add({ ...data.donationPayload, stripeChargeId: chargeResponse.id })
             }
 
             return chargeResponse

@@ -156,7 +156,7 @@ const CardForm = ({ user, donee }) => {
                                 <Order backgroundColor="#6247AA" productName={capitalizedDoneeName} charges={charges} />
                                 <PaymentRequestButton stripe={stripe} {...chargePayload} />
                                 <TextField id='name' required errorMessage='Please provide your name as it appears on your card' placeholder='Name' valueHook={setName} />
-                                {user.isAnonymous && <EmailField valueHook={setEmail} />}
+                                {(user.isAnonymous || !user.email) && <EmailField valueHook={setEmail} />}
                                 <TextField id='street-address-1' required errorMessage='Please provide a valid street address' placeholder='Street Address' valueHook={setStreetAddress} />
                                 <TextField id='street-address-2' errorMessage='Please provide a valid street address' placeholder='Street Address 2' valueHook={setStreetAddress2} />
                                 <TextField id='zip-code' required errorMessage='Please provide a valid zip code' placeholder='Zipcode' valueHook={setZipCode} />
