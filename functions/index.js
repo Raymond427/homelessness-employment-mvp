@@ -34,3 +34,30 @@ exports.createPaymentIntent = functions.https.onCall(
         }
     }
 )
+
+exports.onPaymentSuccessful = functions.https.onRequest(
+    async (request, response) => {
+        const requestSignature = request.headers['stripe-signature']
+        const signingKey = functions.config().stripe.signing_key
+
+        try {
+            const event = stripe.webhooks.constructEvent(request.rawBody, requestSignature, signingKey)
+        } catch (err) {
+            return response.status(400).end()
+        }
+        
+        const donationObject = request.body.data.object
+        const { id, amount, created, currency, metadata } = donationObject
+        const donation = {
+            stripeId: id,
+            ...metadata,
+            totalAmount: amount,
+            created: Number(created),
+            currency
+        }
+
+        db.collection('/donations').add(donation)
+
+        return response.status(200).end()
+    }
+)
