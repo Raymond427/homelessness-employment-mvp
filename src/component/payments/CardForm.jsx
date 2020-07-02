@@ -9,7 +9,7 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { performanceMonitor } from '../../firebase'
 import { analytics } from '../../firebase'
 import { NarrowCard } from '../Card'
-import { FeedBackForm } from '../page/Feedback'
+import FeedbackForm from '../page/Feedback'
 import { Donation } from '../DonationFeed'
 import ShareButton, { shareData } from '../ShareButton'
 import PaymentRequestButton from './PaymentRequestButton'
@@ -146,7 +146,7 @@ const CardForm = ({ user, donee }) => {
                             <Donation name={user.isAnonymous ? 'You' : user.displayName} amountDonated={donationAmount} message={donationMessage} />
                             <h4>One last thing!</h4>
                             <p>We’re planning on expanding this service! Let us know what you think!</p>
-                            <FeedBackForm user={user} setPosted={false} />
+                            <FeedbackForm user={user} email={email} />
                         </NarrowCard>
                     :   <NarrowCard title={`Donate to ${capitalizedDoneeName}`}>
                             <Form onSubmit={processPayment} submitting={isLoading} submitValue={'Donate!'} submittingValue={'Processing...'} errorMessage={paymentResult} >

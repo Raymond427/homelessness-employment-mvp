@@ -9,7 +9,7 @@ export const Donation = ({ name, amountDonated, message }) => (
         <Account />
         <div className="donation-info">
             <p className="donation-header">{name} donated {usdFormat(amountDonated)}</p>
-            <p className="donation-message">{message}</p>
+            {message && <p className="donation-message">{message}</p>}
         </div>
     </div>
 )
