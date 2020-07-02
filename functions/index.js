@@ -34,18 +34,3 @@ exports.createPaymentIntent = functions.https.onCall(
         }
     }
 )
-
-exports.processPayment = functions.https.onCall(
-    async data => {
-        try {
-            const chargeResponse = await stripe.charges.create({ metadata: { firebaseuid }, ...data.chargePayload })
-            if (chargeResponse.status === 'succeeded') {
-                db.collection('/donations').add({ ...data.donationPayload, stripeChargeId: chargeResponse.id })
-            }
-
-            return chargeResponse
-        } catch (error) {
-            return error
-        }
-    }
-)
