@@ -55,7 +55,7 @@ export default ({ doneeId }) => {
                     </NarrowCard>
                     <NarrowCard className="donee-supporters">
                         <h3>{`${campaign.firstName}'s Supporters`}</h3>
-                        <DonationFeed doneeId={campaign.id} />
+                        <DonationFeed campaignId={campaign.id} messageWrap limit={5} />
                     </NarrowCard>
                     <NarrowCard>
                         <h3>{`Organizations supporting ${campaign.firstName}`}</h3>

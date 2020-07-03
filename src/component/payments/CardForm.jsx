@@ -4,7 +4,7 @@ import Form from '../form'
 import { capitalize, totalPrice, usdFormat, usdFormatToCents } from '../../utils'
 import { PATHS } from '../../utils/constants'
 import { chargeCard, handlePaymentError, isPaymentError, calculateProcessingFee } from '../../utils/payments'
-import { TextField, USDField, RadioField, EmailField } from '../form/input'
+import { TextField, USDField, RadioField, EmailField, CheckboxField } from '../form/input'
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { performanceMonitor } from '../../firebase'
 import { analytics } from '../../firebase'
@@ -21,6 +21,7 @@ const CardForm = ({ user, donee }) => {
     const [ paymentSuccessful, setPaymentSuccessful] = useState(false)
     const [ paymentResult, setPaymentResult ] = useState('')
     const [ isLoading, setIsLoading ] = useState(false)
+    const [ anonymousDonation, setAnonymousDonation ] = useState(false)
     const [ name, setName ] = useState('')
     const [ email, setEmail ] = useState(user.isAnonymous ? '' : user.email)
     const [ streetAddress, setStreetAddress ] = useState('')
@@ -76,6 +77,7 @@ const CardForm = ({ user, donee }) => {
         setPaymentSuccessful,
         setIsLoading,
         setPaymentResult,
+        anonymousDonation: anonymousDonation,
         method: 'card'
     }
 
@@ -112,7 +114,7 @@ const CardForm = ({ user, donee }) => {
                 paymentMethodCreationTrace.putAttribute('result', 'success')
                 paymentMethodCreationTrace.stop()
 
-                const chargeResult = await chargeCard(stripe.confirmCardPayment, paymentMethod.id, chargePayload)
+                const chargeResult = await chargeCard(stripe.confirmCardPayment, paymentMethod.id, chargePayload, name)
                 
                 if (isPaymentError(chargeResult)) {
                     handlePaymentError(setPaymentResult, chargeResult)
@@ -143,16 +145,17 @@ const CardForm = ({ user, donee }) => {
                             <h4>{email && email.length > 0 ? `We’ve sent a reciept to ${email}` : "We’ve sent a reciept to your email address"}</h4>
                             <Order productName={capitalizedDoneeName} charges={charges} />
                             <h4>Here's how your donation will appear on {donee.firstName}'s campaign</h4>
-                            <Donation name={user.isAnonymous ? 'You' : user.displayName} amountDonated={donationAmount} message={donationMessage} />
+                            <Donation user={user} nameOnCard={name} anonymousDonation={anonymousDonation} amountDonated={donationAmount} message={donationMessage} thumbnail={user.photoURL} />
                             <h4>One last thing!</h4>
                             <p>We’re planning on expanding this service! Let us know what you think!</p>
                             <FeedbackForm user={user} email={email} />
-                        </NarrowCard>
+                        </NarrowCard> 
                     :   <NarrowCard title={`Donate to ${capitalizedDoneeName}`}>
                             <Form onSubmit={processPayment} submitting={isLoading} submitValue={'Donate!'} submittingValue={'Processing...'} errorMessage={paymentResult} >
                                 <RadioField labelText="Enter your donation amount" id="donation-quick-select" name="donation-quick-select" valueHook={onQuickSelectClick} options={[500, 1000, 2000, 'Custom Amount'].map(value => ({ value, text: isNaN(value) ? value : usdFormat(value) }))} />
                                 {showCustomInput && <USDField id="donation-custom-amount" name="donation-custom-amount" valueHook={value => setDonationAmount(usdFormatToCents(value))} placeholder="or, you can enter a custom amount here" />}
                                 <TextField id="donation-message" type="textarea" placeholder={`You can leave a message for ${donee.firstName} here!`} valueHook={setDonationMessage} />
+                                <CheckboxField id="anonymous-donation-checkbox" name="anonymous-checkbox" valueHook={value => setAnonymousDonation(Boolean(value[0]))} options={[{ text: "I'd like my donation to be anonymous", value: 'anonymous' }]} />
                                 <Order backgroundColor="#6247AA" productName={capitalizedDoneeName} charges={charges} />
                                 <PaymentRequestButton stripe={stripe} {...chargePayload} />
                                 <TextField id='name' required errorMessage='Please provide your name as it appears on your card' placeholder='Name' valueHook={setName} />

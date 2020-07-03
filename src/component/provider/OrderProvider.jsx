@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { donationSubscription } from '../../firebase'
 
-export const OrderContext = React.createContext()
-export const OrderConsumer = OrderContext.Consumer
+export const DonationContext = React.createContext()
+export const DonationConsumer = DonationContext.Consumer
 
 export default ({ user, children }) => {
-    const [ orders, setOrders ] = useState([])
+    const [ campaignDonations, setCampaignDonations ] = useState([])
+    const [ userDonations, setUserDonations ] = useState([])
 
-    const updateOrders = snapShot => setOrders(
+    const updateDonations = snapShot => setDonations(
         snapShot.docs.map(doc =>
             ({ id: doc.id, ...doc.data() })
         )
     )
-    let unSubscribeFromOrders = undefined
+    let unSubscribeFromDonations = undefined
 
     useEffect(() => {
         if (user) {
-            unSubscribeFromOrders = donationSubscription(user.uid, updateOrders).onSnapshot(updateOrders)
-            return unSubscribeFromOrders
+            unSubscribeFromDonations = donationSubscription(user.uid, updateDonations).onSnapshot(updateDonations)
+            return unSubscribeFromDonations
         } else {
-            setOrders([])
+            setCampaignDonations([])
         }
     }, [ user ])
     
     return (
-        <OrderContext.Provider value={{ orders }}>
+        <DonationContext.Provider value={{ campaignDonations, userDonations }}>
             {children}
-        </OrderContext.Provider>       
+        </DonationContext.Provider>       
     )
 }

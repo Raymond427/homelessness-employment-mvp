@@ -14,6 +14,10 @@
     }
 }
 
+#anonymous-donation-checkbox-field {
+    padding: 0.5rem 0;
+}
+
 .payment-request-button-divisor {
     text-align: center;
     margin: 1rem auto;

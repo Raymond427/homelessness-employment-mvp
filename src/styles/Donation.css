@@ -5,15 +5,22 @@
 .donation {
     text-align: left;
     overflow: hidden;
-    white-space: nowrap;
     margin: 0.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .account-icon {
     margin-right: 0.5rem;
 }
 
-.donation-message, .donation-header {
+.donation-header {
+    position: relative;
+    margin: 0;
+}
+
+.donation-message {
     overflow: hidden;
     white-space: nowrap;
     margin: 0.1rem 0;
@@ -21,6 +28,7 @@
 
 .donation-header {
     font-weight: bold;
+    width: 100%;
 }
 
 .donation-message {

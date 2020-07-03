@@ -11,11 +11,11 @@ export default ({ children }) => {
             ({ id: doc.id, ...doc.data() })
         )
     )
-    let unSubscribeFromcampaigns = undefined
+    let unSubscribeFromCampaigns = undefined
 
     useEffect(() => {
-        unSubscribeFromcampaigns = campaignSubscription().onSnapshot(updateCampaigns)
-        return unSubscribeFromcampaigns
+        unSubscribeFromCampaigns = campaignSubscription().onSnapshot(updateCampaigns)
+        return unSubscribeFromCampaigns
     }, [])
     
     return (

@@ -11,7 +11,7 @@ const CampaignProgress = ({ amountDonated, goal, donationCount }) => {
             <progress className="campaign-progress-bar" max={goal} value={amountDonated} />
             <small className="campaign-progress-amount-zero">{usdFormat(0)}</small>
             <small className="campaign-progress-goal">{usdFormat(goal)}</small>
-            <small className="campaign-progress-patrons">{`${donationCount} Patrons`}</small>
+            <small className="campaign-progress-patrons">{`${donationCount} ${donationCount === 1 ? 'Donation' : 'Donations'}`}</small>
         </div>
     )
 }

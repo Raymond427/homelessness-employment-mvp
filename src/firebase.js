@@ -79,7 +79,8 @@ const firestore = firebase.firestore()
 firestore.settings({})
 firestore.enablePersistence()
 export const postFeedback = feedback => firestore.collection('/feedback').add(feedback)
-export const getDonations = uid => firestore.collection('/donations').where('donorId', '==', uid).orderBy('datePurchased', 'desc').get()
+export const getUserDonations = uid => firestore.collection('/donations').where('firebase_uid', '==', uid).orderBy('created', 'desc')
+export const getCampaignDonations = (campaignId, limit) => firestore.collection('/donations').where('campaign_id', '==', campaignId).orderBy('created', 'desc').limit(limit)
 export const campaignSubscription = () => firestore.collection('/campaign')
 
 export default firebase

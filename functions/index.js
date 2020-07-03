@@ -48,8 +48,9 @@ exports.onPaymentSuccessful = functions.https.onRequest(
             ...metadata,
             donation_amount: Number(metadata.donation_amount),
             processing_fee: Number(metadata.processing_fee),
+            anonymous_donation: metadata.anonymous_donation === 'true',
             totalAmount: amount,
-            created: Number(created),
+            created: Number(created) * 1000,
             currency
         }
 

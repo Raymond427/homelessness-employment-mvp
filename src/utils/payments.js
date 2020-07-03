@@ -8,30 +8,33 @@ const stripeProcessingFee = amount => (amount * 0.029) + 30
 
 export const calculateProcessingFee = amount => stripeProcessingFee(amount) + (amount * MARGIN)
 
-export const paymentIntentArgsFactory = (donee, totalCost, source, user, donationAmount, donationMessage, processingFee) => ({
+export const paymentIntentArgsFactory = (donee, totalCost, source, user, donationAmount, donationMessage, processingFee, nameOnCard, anonymousDonation) => ({
     amount: totalCost,
     currency: 'usd',
     description: `Donation to ${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
     metadata: {
+        campaign_name: `${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
         donation_amount: donationAmount,
         processing_fee: processingFee,
         firebase_uid: user.uid,
         donationMessage,
         campaign_id: donee.id,
-        photoURL: user.photoURL
+        anonymous_donation: anonymousDonation,
+        photoURL: user.photoURL,
+        name_on_card: nameOnCard
     },
     payment_method: source,
     payment_method_types: [ 'card' ],
     receipt_email: user.email
 })
 
-export const chargeCard = async (confirmCardPayment, source, { donee, donationAmount, donationMessage, user, totalCost, processingFee, method }) => {
+export const chargeCard = async (confirmCardPayment, source, { donee, anonymousDonation, donationAmount, donationMessage, user, totalCost, processingFee, method }, nameOnCard) => {
     const chargeTrace = performanceMonitor.trace('charge')
     chargeTrace.start()
     chargeTrace.putAttribute('method', method)
 
     try {
-        const paymentIntentArgs = paymentIntentArgsFactory(donee, totalCost, source, user, donationAmount, donationMessage, processingFee)
+        const paymentIntentArgs = paymentIntentArgsFactory(donee, totalCost, source, user, donationAmount, donationMessage, processingFee, nameOnCard, anonymousDonation)
         const createPaymentIntent = firebase.functions().httpsCallable('createPaymentIntent')
 
         const { data: paymentIntent } = await createPaymentIntent(paymentIntentArgs)

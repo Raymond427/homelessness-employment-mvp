@@ -17,7 +17,9 @@ const AccountLink = ({ user: { photoURL }, history, onHomePage }) => {
 
     return (
         <button className="account-link" onClick={() => history.push(PATHS.ACCOUNT)}>
-            {photoURL && !showDefaultIcon ? <img className='account-icon account-profile' alt='account icon' src={photoURL} onError={() => setShowDefaultIcon(true)} /> : <Account color={onHomePage ? '#FFFFFF' : 'var(--secondary-text-color)'} />}
+            {photoURL && !showDefaultIcon
+                ? <img className='account-icon account-profile' alt='account icon' src={photoURL} onError={() => setShowDefaultIcon(true)} />
+                : <Account color={onHomePage ? '#FFFFFF' : 'var(--secondary-text-color)'} />}
         </button>
     )
 }

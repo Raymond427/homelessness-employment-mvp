@@ -4,7 +4,7 @@ import { capitalize } from '../../utils'
 import { paymentIntentArgsFactory, handlePaymentError } from '../../utils/payments'
 import firebase, { performanceMonitor, analytics } from '../../firebase'
 
-const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, donationMessage, processingFee, setIsLoading, setPaymentResult, setPaymentSuccessful, ...chargePayload }) => {
+const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, donationMessage, processingFee, setIsLoading, setPaymentResult, setPaymentSuccessful, anonymousDonation }) => {
     const [ canMakePayment, setCanMakePayment ] = useState(false)
     const [ paymentRequest, setPaymentRequest ] = useState(null)
 
@@ -75,7 +75,7 @@ const PaymentRequestButton = ({ stripe, user, donee, totalCost, donationAmount, 
 
                 try {
                     const createPaymentIntent = firebase.functions().httpsCallable('createPaymentIntent')
-                    const paymentIntentArgs = paymentIntentArgsFactory(donee, totalCost, event.paymentMethod.id, { ...user, email: event.payerEmail }, donationAmount, donationMessage, processingFee)
+                    const paymentIntentArgs = paymentIntentArgsFactory(donee, totalCost, event.paymentMethod.id, { ...user, email: event.payerEmail }, donationAmount, donationMessage, processingFee, event.payerName, anonymousDonation)
                     const { data: paymentIntent } = await createPaymentIntent(paymentIntentArgs)
     
                     if (paymentIntent.type === 'StripeInvalidRequestError') {

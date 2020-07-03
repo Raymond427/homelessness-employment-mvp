@@ -13,7 +13,6 @@ import Loading from './icon/Loading'
 const DoneeThumbnail = () => {
     const { campaigns } = useContext(CampaignContext)
 
-    console.log(campaigns)
     const history = useHistory()
     const doneeCardStyles = {
         width: '15rem',
@@ -29,7 +28,7 @@ const DoneeThumbnail = () => {
                 <CampaignProgress amountDonated={campaigns[0].amountDonated} goal={campaigns[0].goal} donationCount={campaigns[0].donationCount} />
                 <Button onClick={() => history.push(`${PATHS.PROFILE}/${campaigns[0].id}`)}>Learn More About John</Button>
                 <ShareButton theme={'icon'} shareData={shareData(`${PATHS.PROFILE}/${campaigns[0].id}`)} />
-                <DonationFeed doneeId={campaigns[0].id} limit={2} />
+                <DonationFeed campaignId={campaigns[0].id} limit={2} />
             </Card>
         </div>
     ) : (<Loading color='#FFFFFF' />)
