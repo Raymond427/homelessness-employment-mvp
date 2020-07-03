@@ -102,7 +102,7 @@ const SignInAndSignUp = ({ newUser, donateOnSignIn, showDialog, addToHomeScreen 
 const Login = ({ user }) => {
     const location = useLocation()
     const pathOnSignIn = (location.state && location.state.pathOnSignIn) ? location.state.pathOnSignIn : PATHS.HOME
-    const donateOnSignIn = /\/donate\/\d+/.test(pathOnSignIn)
+    const donateOnSignIn = /\/donate\//.test(pathOnSignIn)
     const { showDialog } = useContext(DialogContext)
     const { addToHomeScreen } = useContext(InstallPromptContext)
 

@@ -23,12 +23,7 @@ exports.createPaymentIntent = functions.https.onCall(
         const userStripeCustomerId = user.data() ? user.data().stripeid : null
         
         try {
-            const paymentIntent = await stripe.paymentIntents.create(user && user.email && userStripeCustomerId ? { ...paymentIntentArgs, customer: userStripeCustomerId } : paymentIntentArgs)
-            if (paymentIntent.status === 'succeeded') {
-                db.collection('/donations').add({ ...data.donationPayload, stripeChargeId: chargeResponse.id })
-            }
-
-            return paymentIntent
+            return await stripe.paymentIntents.create(user && user.email && userStripeCustomerId ? { ...paymentIntentArgs, customer: userStripeCustomerId } : paymentIntentArgs)
         } catch (error) {
             return error
         }
@@ -41,7 +36,7 @@ exports.onPaymentSuccessful = functions.https.onRequest(
         const signingKey = functions.config().stripe.signing_key
 
         try {
-            const event = stripe.webhooks.constructEvent(request.rawBody, requestSignature, signingKey)
+            stripe.webhooks.constructEvent(request.rawBody, requestSignature, signingKey)
         } catch (err) {
             return response.status(400).end()
         }
@@ -51,12 +46,20 @@ exports.onPaymentSuccessful = functions.https.onRequest(
         const donation = {
             stripeId: id,
             ...metadata,
+            donation_amount: Number(metadata.donation_amount),
+            processing_fee: Number(metadata.processing_fee),
             totalAmount: amount,
             created: Number(created),
             currency
         }
 
         db.collection('/donations').add(donation)
+        const campaignRef = db.collection(`/campaign`).doc(metadata.campaign_id)
+        const campaignData = (await campaignRef.get()).data()
+        campaignRef.update({
+            amountDonated: campaignData.amountDonated + Number(metadata.donation_amount),
+            donationCount: campaignData.donationCount + 1,
+        })
 
         return response.status(200).end()
     }

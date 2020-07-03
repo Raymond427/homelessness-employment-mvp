@@ -1,7 +1,6 @@
 import React from 'react'
 import Page from "."
 import DoneeThumbnail from '../DoneeThumbnail'
-import donees from '../../data/donees'
 import '../../styles/Home.css'
 import Logo from '../../img/Logo'
 import PCMeeting from '../../img/PCMeeting.png'
@@ -17,7 +16,7 @@ export default () => (
                     <Logo className="main-logo" color="#FFFFFF" />
                     <p className="home-sub-header">Your current situation is never your final destination. All it takes is a pivot.</p>
                 </header>
-                <DoneeThumbnail {...donees[0]} />
+                <DoneeThumbnail />
             </div>
             <div className="home-description-wrapper">
                 <h2 className="home-description">Tackling the issue of homelessness is no easy task. It requires a lot more than an individual effort. It requires consistent collaboration from everyone; a community effort.</h2>

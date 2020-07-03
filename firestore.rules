@@ -5,6 +5,9 @@ service cloud.firestore {
     	match /feedback/{feedbackId} {
       	allow create: if request.auth.uid != null;
       }
+      match /campaign/{campaignId} {
+        allow get, list;
+      }
     }
   }
 }

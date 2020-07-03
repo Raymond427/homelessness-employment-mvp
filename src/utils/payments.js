@@ -13,10 +13,12 @@ export const paymentIntentArgsFactory = (donee, totalCost, source, user, donatio
     currency: 'usd',
     description: `Donation to ${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`,
     metadata: {
-        price: donationAmount,
+        donation_amount: donationAmount,
         processing_fee: processingFee,
         firebase_uid: user.uid,
-        donationMessage
+        donationMessage,
+        campaign_id: donee.id,
+        photoURL: user.photoURL
     },
     payment_method: source,
     payment_method_types: [ 'card' ],

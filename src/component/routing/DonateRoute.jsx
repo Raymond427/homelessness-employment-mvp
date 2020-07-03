@@ -1,7 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { PATHS } from '../../utils/constants'
-import donees from '../../data/donees.json'
 
 const DonateRoute = ({ condition = true, Component, redirectOnRestricted = PATHS.HOME, computedMatch, user, ...rest }) => {
     const doneeId = computedMatch.params.doneeId
@@ -9,14 +8,8 @@ const DonateRoute = ({ condition = true, Component, redirectOnRestricted = PATHS
         return <Redirect to={PATHS.HOME} />
     }
 
-    const donee = donees.find(donee => donee.id === doneeId)
-
-    if (!donee) {
-        return <Redirect to={PATHS.HOME} />
-    }
-
     return condition
-        ? <Component donee={donee} user={user} {...rest} />
+        ? <Component user={user} {...rest} />
         : <Redirect to={{ pathname: PATHS.SIGN_UP, state: { newUser: true, pathOnSignIn: `${PATHS.DONATE}/${doneeId}` }}} />
 }
 
