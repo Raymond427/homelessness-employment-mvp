@@ -43,6 +43,8 @@ const CardForm = ({ user, donee }) => {
         }
     }, [ stripe ])
 
+    useEffect(() => window.scrollTo(0, 0), [ paymentSuccessful ])
+
     if (!stripe || !elements) { return null }
 
     const capitalizedDoneeName = `${capitalize(donee.firstName)} ${capitalize(donee.lastName)}`
