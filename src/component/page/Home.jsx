@@ -26,13 +26,13 @@ export default () => (
                         <img alt="Pivot candidate meeting" src={PCMeeting} />
                         <div className="how-it-works-description">
                             <h3>View our campaigns</h3>
-                            <p>Every candidate on The Pivot Fund is referred to us by a local homeless shelter or their local. From there we provide them with a dedicated pivot coach (PC) a Pivot Fund employee who supports/coaches them into their new career!</p>
+                            <p>Every candidate on The Pivot Fund is referred to us by a local homeless shelter.</p>
                         </div>
                     </div>
                     <div className="how-it-works how-it-works-2">
                         <div className="how-it-works-description">
                             <h3>Fund someone's Pivot</h3>
-                            <p>Support an individual or fund everyone equally. Want the ultimate experience? Become an official member of The Pivot Fund.You’ll get a personalized email introducing you to a new candidate  you’re supporting every month and the opportunity to learn more about their unique story.</p>
+                            <p>You’ll get a personalized email introducing you to the candidate you’re supporting every month and the opportunity to learn more about their unique story.</p>
                         </div>
                         <img alt="Looking for pivots on the computer" src={FundingPivot} />
                     </div>
@@ -40,7 +40,7 @@ export default () => (
                         <img alt="Spreading the word about Pivot" src={Share} />
                         <div className="how-it-works-description">
                             <h3>Share the transformation</h3>
-                            <p>Donating is just the beginning! Opt in for the opportunity to receive live progress updates from each person you fund and encourage them with supportive comments as they progress in their career.</p>
+                            <p>Help us build our team in the fight against homelessness. Use the links in this app and your emails to share your pivot's story with your friends and boost your impact!</p>
                         </div>
                     </div>
                 </div>
