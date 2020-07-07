@@ -8,6 +8,9 @@ service cloud.firestore {
       match /campaign/{campaignId} {
         allow get, list;
       }
+      match /donations/{id} {
+        allow get, list;
+      }
     }
   }
 }
