@@ -21,7 +21,7 @@ const shareContent = (showDialog, shareData) => {
 
 export const shareData = path => ({
     title: 'The Pivot Fund',
-    text: 'Hey! check out this campaign on The Pivot Fund!',
+    text: 'Hey! Check out this new nonprofit and crowdfunding platform fighting homelessness!',
     url: FULL_URL(path),
     path
 })
