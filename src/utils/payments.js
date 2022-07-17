@@ -4,7 +4,7 @@ import { performanceMonitor, analytics } from "../firebase";
 
 const MARGIN = 0.1;
 
-const stripeProcessingFee = amount => amount * 0.029 + 30;
+const stripeProcessingFee = amount => Math.ceil(amount * 0.029 + 30);
 
 export const calculateProcessingFee = amount =>
   stripeProcessingFee(amount) + amount * MARGIN;
