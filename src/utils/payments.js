@@ -9,7 +9,8 @@ const stripeProcessingFee = amount => Math.ceil(amount * 0.029 + 30);
 const calculateServiceFee = amount => amount * MARGIN;
 
 export const calculateProcessingFee = amount =>
-  stripeProcessingFee(amount) + calculateServiceFee(amount);
+  stripeProcessingFee(amount + calculateServiceFee(amount)) +
+  calculateServiceFee(amount);
 
 export const paymentIntentArgsFactory = (
   donee,
