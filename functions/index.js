@@ -27,15 +27,19 @@ exports.createStripeCustomer = functions.auth
 exports.createPaymentIntent = functions.https.onCall(
   async paymentIntentArgs => {
     const firebaseuid = paymentIntentArgs.metadata.firebase_uid;
-    const userStripeCustomerId = paymentIntentArgs.metadata.guest_user
+    const isGuestUser = paymentIntentArgs.metadata.guest_user;
+    const userStripeCustomerId = isGuestUser
       ? null
       : await (await db.doc(`users/${firebaseuid}`).get()).data().stripeid;
+    const paymentIntent = isGuestUser
+      ? paymentIntentArgs
+      : {
+          ...paymentIntentArgs,
+          customer: userStripeCustomerId
+        };
 
     try {
-      return await stripe.paymentIntents.create({
-        ...paymentIntentArgs,
-        customer: userStripeCustomerId
-      });
+      return await stripe.paymentIntents.create(paymentIntent);
     } catch (error) {
       return error;
     }

@@ -6,8 +6,10 @@ const MARGIN = 0.1;
 
 const stripeProcessingFee = amount => Math.ceil(amount * 0.029 + 30);
 
+const calculateServiceFee = amount => amount * MARGIN;
+
 export const calculateProcessingFee = amount =>
-  stripeProcessingFee(amount) + amount * MARGIN;
+  stripeProcessingFee(amount) + calculateServiceFee(amount);
 
 export const paymentIntentArgsFactory = (
   donee,
@@ -30,6 +32,7 @@ export const paymentIntentArgsFactory = (
       donee.lastName
     )}`,
     donation_amount: donationAmount,
+    service_fee: calculateServiceFee(donationAmount),
     processing_fee: processingFee,
     firebase_uid: user.uid,
     guest_user: user.isAnonymous,
