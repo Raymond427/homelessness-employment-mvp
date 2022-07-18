@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Page from "."
 import { NarrowCard } from '../Card'
 import CampaignProgress from '../CampaignProgress'
@@ -15,24 +15,26 @@ import { analytics } from '../../firebase'
 import { capitalize } from '../../utils'
 import Loading from '../icon/Loading'
 
-export default ({ doneeId }) => {
+export default () => {
     const history = useHistory()
     const { campaigns } = useContext(CampaignContext)
     const campaign = campaigns[0]
 
-    campaigns.length && (analytics.logEvent(
-        'checkout_progress',
-        {
-            items: {
-                id: campaign.id,
-                name: `${capitalize(campaign.firstName)} ${capitalize(campaign.lastName)}`,
-                category: "Campaign Donation",
-                list_position: 1,
-                quantity: 1
+    useEffect(() => {
+        analytics.logEvent(
+            'view_item',
+            {
+                items: {
+                    id: campaign.id,
+                    name: `${capitalize(campaign.firstName)} ${capitalize(campaign.lastName)}`,
+                    category: "Campaign Donation",
+                    list_position: 1,
+                    quantity: 1
+                }
             }
-        }
-    ))
-    
+        )
+    }, [campaigns.length])
+
     return (
         <Page pageClassName="Profile">
             {campaign ? (
