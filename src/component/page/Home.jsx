@@ -48,9 +48,9 @@ export default () => {
             <main className="coming-soon__content">
                 <Logo className="coming-soon__logo" color="#6247AA" />
                 <h1 className="coming-soon__headline">
-                    Local nonprofits, engineers and philanthropists are
+                    Local nonprofits, engineers and philanthropists are{" "}
                     <br />
-                    coming together to make a new way to help
+                    coming together to make a new way to help{" "}
                     <br />
                     Charlotteans help each other
                 </h1>
