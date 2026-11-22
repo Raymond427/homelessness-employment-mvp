@@ -33,7 +33,7 @@ const App = () => (
                                         <Route exact path={PATHS.HOME}>
                                             <Home />
                                         </Route>
-                                        <Route exact path={PATHS.LOGIN}>
+                                        {/* <Route exact path={PATHS.LOGIN}>
                                             <Login user={user} />
                                         </Route>
                                         <Route exact path={PATHS.SIGN_UP}>
@@ -63,7 +63,7 @@ const App = () => (
                                             condition={user}
                                             user={user}
                                             Component={Donations}
-                                        />
+                                        /> */}
                                     </Switch>
                                 )}
                             </UserContext.Consumer>

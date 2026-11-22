@@ -5,6 +5,13 @@ service cloud.firestore {
     	match /feedback/{feedbackId} {
       	allow create: if request.auth.uid != null;
       }
+      match /comingSoonSubscribers/{subscriberId} {
+        allow create: if request.resource.data.keys().hasAll(['email'])
+          && request.resource.data.keys().hasOnly(['email'])
+          && request.resource.data.email is string
+          && request.resource.data.email.size() <= 254
+          && request.resource.data.email.matches('^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$');
+      }
       match /campaign/{campaignId} {
         allow get, list;
       }
